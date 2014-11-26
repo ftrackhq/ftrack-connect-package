@@ -49,13 +49,16 @@ configuration = dict(
     ],
     install_requires=[
         'ftrack-python-legacy-api',
-        connect_install_require
+        connect_install_require,
+        'ftrack-connect-cinesync >= 0.1.0, < 1'
     ],
     dependency_links=[
         'file://{0}#egg=ftrack-python-legacy-api'.format(
             os.environ['FTRACK_PYTHON_LEGACY_API_PATH'].replace('\\', '/')
         ),
-        connect_dependency_link
+        connect_dependency_link,
+        ('https://bitbucket.org/ftrack/ftrack-connect-cinesync/get/master.zip'
+         '#egg=ftrack-connect-cinesync-0.1.0')
     ],
     options={}
 )
@@ -125,6 +128,9 @@ if sys.platform in ('darwin', 'win32'):
 
     configuration['options']['build_exe'] = {
         'includes': [
+            # Force __main__ and export to be included.
+            'ftrack_connect_cinesync.__main__',
+            'ftrack_connect_cinesync.export',
             'ftrack',
             'atexit'  # Required for PySide
         ],
@@ -138,7 +144,8 @@ if sys.platform in ('darwin', 'win32'):
             'boto.compat._json'
         ],
         'include_files': [
-            (resources, 'resource/hook')
+            (resources, 'resource/hook'),
+            ('/Users/bjry/dev/ftrack-connect-package/hook', 'resource/hook')
         ]
     }
 
