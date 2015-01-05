@@ -45,6 +45,15 @@ connect_legacy_plugins_dependency_link = (
     .format(os.environ['FTRACK_CONNECT_LEGACY_PLUGINS_PATH'].replace('\\', '/'))
 )
 
+connect_nuke_studio_install_require = (
+    'ftrack-connect-nuke-studio'
+    ' >=0.1, < 1'
+)
+connect_nuke_studio_dependency_link = (
+    'file://{0}#egg=ftrack-connect-nuke-studio-0.1.0'
+    .format(os.environ['FTRACK_CONNECT_NUKE_STUDIO_PATH'].replace('\\', '/'))
+)
+
 # General configuration.
 configuration = dict(
     name='ftrack-connect-package',
@@ -66,7 +75,8 @@ configuration = dict(
         'ftrack-python-legacy-api',
         connect_install_require,
         cinesync_install_require,
-        connect_legacy_plugins_install_require
+        connect_legacy_plugins_install_require,
+        connect_nuke_studio_install_require
     ],
     dependency_links=[
         'file://{0}#egg=ftrack-python-legacy-api'.format(
@@ -74,7 +84,8 @@ configuration = dict(
         ),
         connect_dependency_link,
         cinesync_dependency_link,
-        connect_legacy_plugins_dependency_link
+        connect_legacy_plugins_dependency_link,
+        connect_nuke_studio_dependency_link
     ],
     options={}
 )
@@ -105,12 +116,14 @@ if sys.platform in ('darwin', 'win32'):
         setup_requires=[
             connect_install_require,
             cinesync_install_require,
-            connect_legacy_plugins_install_require
+            connect_legacy_plugins_install_require,
+            connect_nuke_studio_install_require
         ],
         dependency_links=[
             cinesync_dependency_link,
             connect_dependency_link,
-            connect_legacy_plugins_dependency_link
+            connect_legacy_plugins_dependency_link,
+            connect_nuke_studio_dependency_link
         ]
     ))
     connect_resource_hook = pkg_resources.resource_filename(
@@ -143,7 +156,8 @@ if sys.platform in ('darwin', 'win32'):
         (cinesync_resource_hook, 'resource/hook'),
         (cinesync_resource_script, 'resource/script'),
         (ftrack_connect_legacy_plugins_source, 'resource/legacy_plugins'),
-        (ftrack_connect_legacy_plugins_hook, 'resource/hook')
+        (ftrack_connect_legacy_plugins_hook, 'resource/hook'),
+        (os.path.join(RESOURCE_PATH, 'hook'), 'resource/hook')
     ]
 
     executables = []
@@ -183,6 +197,7 @@ if sys.platform in ('darwin', 'win32'):
         'init_script': os.path.join(RESOURCE_PATH, 'frozen_bootstrap.py'),
         'includes': [
             'ftrack',
+            'ftrack_connect_nuke_studio.plugin',
             'atexit',  # Required for PySide
             'ftrack_connect_cinesync.cinesync_launcher',
             'ftrack_connect.application'
