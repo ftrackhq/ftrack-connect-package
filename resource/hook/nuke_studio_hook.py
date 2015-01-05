@@ -165,7 +165,7 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
                 FTRACK_CONNECT_NUKE_STUDIO_PATH, 'config.json'
             )
             environment['FTRACK_PROCESSOR_PLUGIN_PATH'] = os.path.join(
-                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'processors_plugins'
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'processor'
             )
             environment['FTRACK_LOCATION_PLUGIN_PATH'] = os.path.join(
                 FTRACK_CONNECT_NUKE_STUDIO_PATH, 'example_location'

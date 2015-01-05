@@ -203,6 +203,7 @@ if sys.platform in ('darwin', 'win32'):
         'init_script': os.path.join(RESOURCE_PATH, 'frozen_bootstrap.py'),
         'includes': [
             'ftrack',
+            'ftrack_connect',
             'ftrack_connect_nuke_studio.plugin',
             'atexit',  # Required for PySide
             'ftrack_connect_cinesync.cinesync_launcher',
