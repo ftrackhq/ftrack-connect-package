@@ -206,7 +206,10 @@ if sys.platform in ('darwin', 'win32'):
             'ftrack_connect_nuke_studio.plugin',
             'atexit',  # Required for PySide
             'ftrack_connect_cinesync.cinesync_launcher',
-            'ftrack_connect.application'
+            'ftrack_connect.application',
+            'assetmgr_hiero',
+            'FnAssetAPI',
+            'ftrack_connect_foundry'
         ],
         'excludes': [
             # The following don't actually exist, but are picked up by the
