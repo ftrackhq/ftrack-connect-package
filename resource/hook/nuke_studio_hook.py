@@ -5,12 +5,22 @@ import getpass
 import logging
 import sys
 import pprint
+import os
 
 import ftrack
 import ftrack_connect.application
 
 
 ACTION_IDENTIFIER = 'ftrack-connect-launch-nuke-studio'
+
+FTRACK_CONNECT_NUKE_STUDIO_PATH = os.environ.get(
+    'FTRACK_CONNECT_NUKE_STUDIO_PATH',
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), '..', 'nuke_studio'
+        )
+    )
+)
 
 
 class DiscoverApplicationsHook(object):
@@ -145,7 +155,22 @@ class ApplicationLauncher(ftrack_connect.application.ApplicationLauncher):
 
         # Load Nuke specific environment such as legacy plugins.
         if applicationIdentifier.startswith('nuke_studio'):
-            print "NUKE STUDIO!!!!!"
+            environment['HIERO_PLUGIN_PATH'] = os.path.join(
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'hiero'
+            )
+            environment['FOUNDRY_ASSET_PLUGIN_PATH'] = os.path.join(
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'hiero'
+            )
+            environment['FTRACK_NUKE_STUDIO_CONFIG'] = os.path.join(
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'config.json'
+            )
+            environment['FTRACK_PROCESSOR_PLUGIN_PATH'] = os.path.join(
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'processor'
+            )
+            environment['FTRACK_LOCATION_PLUGIN_PATH'] = os.path.join(
+                FTRACK_CONNECT_NUKE_STUDIO_PATH, 'example_location'
+            )
+            environment['PROJECT_ROOT'] = '/Users/shared/ftrack/'
 
         return environment
 
