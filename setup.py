@@ -198,7 +198,7 @@ if sys.platform in ('darwin', 'win32'):
         (ftrack_connect_legacy_plugins_source, 'resource/legacy_plugins'),
         (ftrack_connect_legacy_plugins_hook, 'resource/hook'),
         (ftrack_connect_nuke_studio_resources, 'resource/nuke_studio'),
-        (ftrack_connect_nuke_studio_hook, 'resource/hook')
+        (ftrack_connect_nuke_studio_hook, 'resource/hook'),
         (ftrack_connect_hieroplayer_hook, 'resource/hook'),
         (ftrack_connect_hieroplayer_source, 'resource/hieroplayer')
     ]
@@ -255,8 +255,7 @@ if sys.platform in ('darwin', 'win32'):
             'ftrack_connect_cinesync.cinesync_launcher',
             'ftrack_connect.application',
             'assetmgr_hiero',
-            'FnAssetAPI',
-            'ftrack_connect_foundry'
+            'FnAssetAPI'
         ],
         'excludes': [
             # The following don't actually exist, but are picked up by the
