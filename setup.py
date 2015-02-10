@@ -153,7 +153,12 @@ if sys.platform in ('darwin', 'win32'):
 
     ftrack_connect_nuke_studio_resources = pkg_resources.resource_filename(
         pkg_resources.Requirement.parse('ftrack-connect-nuke-studio'),
-        'ftrack_connect_nuke_studio_resource'
+        'ftrack_connect_nuke_studio/resource'
+    )
+
+    ftrack_connect_nuke_studio_hook = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect-nuke-studio'),
+        'ftrack_connect_nuke_studio/hook'
     )
 
     include_files = [
@@ -163,7 +168,7 @@ if sys.platform in ('darwin', 'win32'):
         (ftrack_connect_legacy_plugins_source, 'resource/legacy_plugins'),
         (ftrack_connect_legacy_plugins_hook, 'resource/hook'),
         (ftrack_connect_nuke_studio_resources, 'resource/nuke_studio'),
-        (os.path.join(RESOURCE_PATH, 'hook'), 'resource/hook')
+        (ftrack_connect_nuke_studio_hook, 'resource/hook')
     ]
 
     executables = []
