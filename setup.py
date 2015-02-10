@@ -23,17 +23,17 @@ with open(os.path.join(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
 
-connect_install_require = 'ftrack-connect >=0.1, < 1'
+connect_install_require = 'ftrack-connect == 0.1.7'
 # TODO: Update when ftrack-connect released.
 connect_dependency_link = (
-    'https://bitbucket.org/ftrack/ftrack-connect/get/master.zip'
-    '#egg=ftrack-connect-0.1.2'
+    'https://bitbucket.org/ftrack/ftrack-connect/get/0.1.7.zip'
+    '#egg=ftrack-connect-0.1.7'
 )
 
-cinesync_install_require = 'ftrack-connect-cinesync >=0.1, < 1'
+cinesync_install_require = 'ftrack-connect-cinesync == 0.1.2'
 cinesync_dependency_link = (
-    'https://bitbucket.org/ftrack/ftrack-connect-cinesync/get/master.zip'
-    '#egg=ftrack-connect-cinesync-0.1.1'
+    'https://bitbucket.org/ftrack/ftrack-connect-cinesync/get/0.1.2.zip'
+    '#egg=ftrack-connect-cinesync-0.1.2'
 )
 
 connect_legacy_plugins_install_require = (
@@ -41,7 +41,7 @@ connect_legacy_plugins_install_require = (
     ' >=0.1, < 1'
 )
 connect_legacy_plugins_dependency_link = (
-    'file://{0}#egg=ftrack-connect-legacy-plugins-0.1.0'
+    'file://{0}#egg=ftrack-connect-legacy-plugins-0.1.2'
     .format(os.environ['FTRACK_CONNECT_LEGACY_PLUGINS_PATH'].replace('\\', '/'))
 )
 
@@ -52,6 +52,16 @@ connect_nuke_studio_install_require = (
 connect_nuke_studio_dependency_link = (
     'file://{0}#egg=ftrack-connect-nuke-studio-0.1.0'
     .format(os.environ['FTRACK_CONNECT_NUKE_STUDIO_PATH'].replace('\\', '/'))
+)
+
+connect_hieroplayer_install_require = (
+    'ftrack-connect-hieroplayer'
+    ' >=0.1, < 1'
+)
+
+connect_hieroplayer_dependency_link = (
+    'https://bitbucket.org/ftrack/ftrack-connect-hieroplayer/get/0.1.2.zip'
+    '#egg=ftrack-connect-hieroplayer-0.1.2'
 )
 
 # General configuration.
@@ -70,13 +80,17 @@ configuration = dict(
         '': 'source'
     },
     setup_requires=[
+        'sphinx >= 1.2.2, < 2',
+        'sphinx_rtd_theme >= 0.1.6, < 2',
+        'lowdown >= 0.1.0, < 1'
     ],
     install_requires=[
         'ftrack-python-legacy-api',
         connect_install_require,
         cinesync_install_require,
         connect_legacy_plugins_install_require,
-        connect_nuke_studio_install_require
+        connect_nuke_studio_install_require,
+        connect_hieroplayer_install_require
     ],
     dependency_links=[
         'file://{0}#egg=ftrack-python-legacy-api'.format(
@@ -85,7 +99,10 @@ configuration = dict(
         connect_dependency_link,
         cinesync_dependency_link,
         connect_legacy_plugins_dependency_link,
-        connect_nuke_studio_dependency_link
+        connect_nuke_studio_dependency_link,
+        ('https://bitbucket.org/ftrack/lowdown/get/0.1.0.zip'
+         '#egg=lowdown-0.1.0'),
+        connect_hieroplayer_dependency_link
     ],
     options={}
 )
@@ -117,15 +134,18 @@ if sys.platform in ('darwin', 'win32'):
             connect_install_require,
             cinesync_install_require,
             connect_legacy_plugins_install_require,
-            connect_nuke_studio_install_require
+            connect_nuke_studio_install_require,
+            connect_hieroplayer_install_require
         ],
         dependency_links=[
             cinesync_dependency_link,
             connect_dependency_link,
             connect_legacy_plugins_dependency_link,
-            connect_nuke_studio_dependency_link
+            connect_nuke_studio_dependency_link,
+            connect_hieroplayer_dependency_link
         ]
     ))
+
     connect_resource_hook = pkg_resources.resource_filename(
         pkg_resources.Requirement.parse('ftrack-connect'),
         'ftrack_connect_resource/hook'
@@ -161,6 +181,16 @@ if sys.platform in ('darwin', 'win32'):
         'ftrack_connect_nuke_studio/hook'
     )
 
+    ftrack_connect_hieroplayer_source = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect-hieroplayer'),
+        'ftrack_connect_hieroplayer_source'
+    )
+
+    ftrack_connect_hieroplayer_hook = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect-hieroplayer'),
+        'ftrack_connect_hieroplayer_resource/hook'
+    )
+
     include_files = [
         (connect_resource_hook, 'resource/hook'),
         (cinesync_resource_hook, 'resource/hook'),
@@ -169,6 +199,8 @@ if sys.platform in ('darwin', 'win32'):
         (ftrack_connect_legacy_plugins_hook, 'resource/hook'),
         (ftrack_connect_nuke_studio_resources, 'resource/nuke_studio'),
         (ftrack_connect_nuke_studio_hook, 'resource/hook')
+        (ftrack_connect_hieroplayer_hook, 'resource/hook'),
+        (ftrack_connect_hieroplayer_source, 'resource/hieroplayer')
     ]
 
     executables = []
@@ -182,6 +214,12 @@ if sys.platform in ('darwin', 'win32'):
             )
         )
 
+        # Specify upgrade code to a random GUID to ensure the MSI
+        # package is upgraded when installing a new version.
+        configuration['options']['bdist_msi'] = {
+            'upgrade_code': '{e5666af3-56a5-426a-b308-54c2d6ad8704}'
+        }
+
     elif sys.platform == 'darwin':
         executables.append(
             Executable(
@@ -194,7 +232,10 @@ if sys.platform in ('darwin', 'win32'):
 
         configuration['options']['bdist_mac'] = {
             'iconfile': './logo.icns',
-            'bundle_name': 'ftrack-connect'
+            'bundle_name': 'ftrack-connect',
+            'custom_info_plist': os.path.join(
+                RESOURCE_PATH, 'Info.plist'
+            )
         }
 
         configuration['options']['bdist_dmg'] = {
