@@ -6,6 +6,7 @@ import sys
 import pprint
 import logging
 import json
+import re
 
 import ftrack
 import ftrack_connect.application
@@ -144,7 +145,7 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
             prefix = ['/', 'Applications']
 
             applications.extend(self._searchFilesystem(
-                expression=prefix + ['RV.Application', 'RV.*.*.app'],
+                expression=prefix + ['RV.\d+.app'],
                 label='Review with RV {version}',
                 applicationIdentifier='rv_{version}_with_review',
                 icon='rv',
@@ -158,14 +159,17 @@ class ApplicationStore(ftrack_connect.application.ApplicationStore):
 
             applications.extend(self._searchFilesystem(
                 expression=prefix + [
-                    'RV\d.+', 'RV.*.*.exe'
+                    'Tweak', 'RV.\d.+', 'bin', 'rv.exe'
                 ],
                 label='Review with RV {version}',
                 applicationIdentifier='rv_{version}_with_review',
                 icon='rv',
                 launchArguments=[
                     '-flags', 'ModeManagerPreload=ftrack'
-                ]
+                ],
+                versionExpression=re.compile(
+                    r'(?P<version>\d+.\d+.\d+)'
+                )
             ))
 
         self.logger.debug(
