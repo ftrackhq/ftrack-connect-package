@@ -109,7 +109,7 @@ configuration = dict(
 
 
 # Platform specific distributions.
-if sys.platform in ('darwin', 'win32'):
+if sys.platform in ('darwin', 'win32', 'linux2'):
 
     # Ensure cx_freeze available for import.
     Distribution(
@@ -204,6 +204,7 @@ if sys.platform in ('darwin', 'win32'):
     ]
 
     executables = []
+    bin_includes = []
     if sys.platform == 'win32':
         executables.append(
             Executable(
@@ -243,6 +244,25 @@ if sys.platform in ('darwin', 'win32'):
             'volume_label': 'ftrack-connect-{0}'.format(VERSION)
         }
 
+    elif sys.platform == 'linux2':
+        executables.append(
+            Executable(
+                script='source/ftrack_connect_package/__main__.py',
+                base=None,
+                targetName='ftrack_connect_package',
+                icon='./logo.icns'
+            )
+        )
+        
+        # Force Qt to be included.
+        bin_includes = [
+            'libQtCore.so',
+            'libQtGui.so',
+            'libQtNetwork.so',
+            'libQtSvg.so',
+            'libQtXml.so'
+        ]
+
     configuration['executables'] = executables
 
     configuration['options']['build_exe'] = {
@@ -270,7 +290,8 @@ if sys.platform in ('darwin', 'win32'):
             # won't work in frozen package.
             '_yaml'
         ],
-        'include_files': include_files
+        'include_files': include_files,
+        'bin_includes': bin_includes
     }
 
     configuration['setup_requires'].extend(
