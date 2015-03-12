@@ -127,7 +127,6 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         dict(
             setup_requires=[
                 'cx-freeze == 4.3.3.ftrack',
-                'pyopenssl',
                 'requests >= 2, <3'
             ],
             dependency_links=[
