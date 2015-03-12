@@ -23,10 +23,10 @@ with open(os.path.join(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
 
-connect_install_require = 'ftrack-connect == 0.1.7'
+connect_install_require = 'ftrack-connect == 0.1.8'
 # TODO: Update when ftrack-connect released.
 connect_dependency_link = (
-    'https://bitbucket.org/ftrack/ftrack-connect/get/backlog/crew/integrate-with-nuke.zip#egg=ftrack-connect-0.1.7'
+    'https://bitbucket.org/ftrack/ftrack-connect/get/backlog/crew/integrate-with-nuke.zip#egg=ftrack-connect-0.1.8'
 )
 
 # cinesync_install_require = 'ftrack-connect-cinesync == 0.1.2'
@@ -39,10 +39,11 @@ connect_dependency_link = (
 #     'ftrack-connect-legacy-plugins'
 #     ' >=0.1, < 1'
 # )
-# connect_legacy_plugins_dependency_link = (
-#     'file://{0}#egg=ftrack-connect-legacy-plugins-0.1.4'
-#     .format(os.environ['FTRACK_CONNECT_LEGACY_PLUGINS_PATH'].replace('\\', '/'))
-# )
+
+connect_legacy_plugins_dependency_link = (
+    'file://{0}#egg=ftrack-connect-legacy-plugins-0.1.4'
+    .format(os.environ['FTRACK_CONNECT_LEGACY_PLUGINS_PATH'].replace('\\', '/'))
+)
 
 # connect_hieroplayer_install_require = (
 #     'ftrack-connect-hieroplayer'
@@ -124,7 +125,11 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
     # Ensure cx_freeze available for import.
     Distribution(
         dict(
-            setup_requires='cx-freeze == 4.3.3.ftrack',
+            setup_requires=[
+                'cx-freeze == 4.3.3.ftrack',
+                'pyopenssl',
+                'requests >= 2, <3'
+            ],
             dependency_links=[
                 'https://bitbucket.org/ftrack/cx-freeze/get/ftrack.zip'
                 '#egg=cx-freeze-4.3.3.ftrack'
@@ -217,6 +222,9 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         'ftrack_default_plugins'
     )
 
+    # Add requests certificates to resource folder.
+    import requests.certs
+
     include_files = [
         (connect_resource_hook, 'resource/hook'),
         # (cinesync_resource_hook, 'resource/hook'),
@@ -226,6 +234,7 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         # (ftrack_connect_hieroplayer_hook, 'resource/hook'),
         # (ftrack_connect_hieroplayer_source, 'resource/hieroplayer'),
         # (os.path.join(RESOURCE_PATH, 'hook'), 'resource/hook'),
+        (requests.certs.where(), 'resource/cacert.pem'),
         (ftrack_connect_nuke_hook, 'resource/hook'),
         (ftrack_connect_nuke_source, 'resource/ftrack_connect_nuke'),
         (ftrack_connect_nuke_studio_resources, 'resource/nuke_studio'),
