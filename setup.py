@@ -113,7 +113,11 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
     # Ensure cx_freeze available for import.
     Distribution(
         dict(
-            setup_requires='cx-freeze == 4.3.3.ftrack',
+            setup_requires=[
+                'cx-freeze == 4.3.3.ftrack',
+                'pyopenssl',
+                'requests == 2.2.0'
+            ],
             dependency_links=[
                 'https://bitbucket.org/ftrack/cx-freeze/get/ftrack.zip'
                 '#egg=cx-freeze-4.3.3.ftrack'
@@ -189,6 +193,9 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         'ftrack_connect_nuke/hook'
     )
 
+    # Add requests certificates to resource folder.
+    import requests.certs
+
     include_files = [
         (connect_resource_hook, 'resource/hook'),
         (cinesync_resource_hook, 'resource/hook'),
@@ -199,7 +206,8 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         (ftrack_connect_hieroplayer_source, 'resource/hieroplayer'),
         (os.path.join(RESOURCE_PATH, 'hook'), 'resource/hook'),
         (ftrack_connect_nuke_hook, 'resource/hook'),
-        (ftrack_connect_nuke_source, 'resource/ftrack_connect_nuke')
+        (ftrack_connect_nuke_source, 'resource/ftrack_connect_nuke'),
+        (requests.certs.where(), 'resource/cacert.pem')
     ]
 
     executables = []
