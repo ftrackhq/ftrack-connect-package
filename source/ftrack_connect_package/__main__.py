@@ -93,6 +93,13 @@ if __name__ == '__main__':
         parsedArguments.script and
         _validatePythonScript(parsedArguments.script)
     ):
+        if 'PYTHONPATH' in os.environ and os.environ['PYTHONPATH']:
+            # Add path to PYTHONPATH. This is necessary since cx_Freeze doesn't
+            # automatically detect modules on the PYTHONPATH.
+            sys.path.extend(
+                os.environ['PYTHONPATH'].split(os.pathsep)
+            )
+
         execfile(parsedArguments.script)
 
         raise SystemExit()
