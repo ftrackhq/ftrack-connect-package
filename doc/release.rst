@@ -5,6 +5,11 @@
 Releases
 ########
 
+.. release:: Upcoming
+
+    ..change : new
+
+        `ftrack location compatibility hook DEV`
 
 .. release:: 0.5.4
     :date: 2016-12-01
