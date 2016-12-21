@@ -288,6 +288,11 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         'ftrack_connect_3dsmax/hook'
     )
 
+    ftrack_location_compatibility_source = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-location-compatibility'),
+        'ftrack_location_compatibility/source'
+    )
+
     ftrack_location_compatibility_hook = pkg_resources.resource_filename(
         pkg_resources.Requirement.parse('ftrack-location-compatibility'),
         'ftrack_location_compatibility/hook'
@@ -421,7 +426,7 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         'ftrack_connect_hieroplayer',
         'ftrack_connect_rv',
         'ftrack_connect_cinema_4d',
-        'ftrack_location_compatibility_hook',
+        'ftrack_location_compatibility',
         'lucidity',
         'ftrack_connect_maya',
         'boto',
