@@ -9,6 +9,7 @@ import pkg_resources
 import opcode
 import logging
 import zipfile
+import shutil
 
 # Package and dependencies versions.
 ftrack_connect_version = '1.1.8'
@@ -371,6 +372,9 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
                 icon='./logo.icns'
             )
         )
+
+        shutil.copyfile('resource/entitlements.plist',
+                        os.path.join(BUILD_PATH, 'entitlements.plist'))
 
         configuration['options']['bdist_mac'] = {
             'iconfile': './logo.icns',
