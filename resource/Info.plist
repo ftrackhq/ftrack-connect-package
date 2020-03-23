@@ -12,5 +12,9 @@
 	<string>icon.icns</string>
 	<key>LSUIElement</key>
 	<string>1</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Ftrack Connect 1.1.2, copyright: Copyright (c) 2014 ftrack</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1.2</string>
 </dict>
 </plist>
