@@ -57,7 +57,6 @@ with open(os.path.join(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
 
-
 external_connect_plugins = []
 for plugin in (
     'ftrack-connect-maya-publish-{0}.zip'.format(ftrack_connect_maya_publish_version),
@@ -215,6 +214,9 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
                     )
 
             build.run(self)
+            if sys.platform == 'darwin':
+                shutil.copyfile('resource/entitlements.plist',
+                                os.path.join(BUILD_PATH, 'entitlements.plist'))
 
     configuration['cmdclass'] = {
         'build': Build
@@ -372,9 +374,6 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
                 icon='./logo.icns'
             )
         )
-
-        shutil.copyfile('resource/entitlements.plist',
-                        os.path.join(BUILD_PATH, 'entitlements.plist'))
 
         configuration['options']['bdist_mac'] = {
             'iconfile': './logo.icns',
