@@ -16,7 +16,7 @@ Set Environment variables
         $ export CODESIGN_IDENTITY="<your_certificate_id_here>"
 
         #Set your Apple user name to APPLE_USER_NAME
-        $ export $APPLE_USER_NAME="<your_apple_user>"
+        $ export APPLE_USER_NAME="<your_apple_user>"
 
         #Set the the connect package version
         $ export CONNECT_PACKAGE_VERSION='<your_connect_package_version_here>'
@@ -82,7 +82,7 @@ xcode installed > Xcode 10 with your developer credentials logged)
 
 .. code-block:: bash
 
-    $ xcrun altool --notarize-app --primary-bundle-id "ftrack.connect.package.dmg" --username $APPLE_USER_NAME --password "@keychain:AppleDevPass" --file ./build/ftrack-connect-package-1.1.2.dmg
+    $ xcrun altool --notarize-app --primary-bundle-id "ftrack.connect.package.dmg" --username $APPLE_USER_NAME --password "@keychain:AppleDevPass" --file ./build/ftrack-connect-package-$CONNECT_PACKAGE_VERSION.dmg
     $ sudo xcode-select -s /Applications/Xcode.app
     #Save the returned UUID
     #Example: RequestUUID = dd57d23b-d825-4a1e-8444-1c7bccaec5c7
@@ -113,7 +113,7 @@ Sign the application (Automatically)
 
     $ cd /path/to/ftrack-connect-package
 
-2. Give permissions to postBuild.sh and postbuild_two.sh scripts
+2. Give permissions to postBuild_one.sh and postbuild_two.sh scripts
 
 .. code-block:: bash
 
