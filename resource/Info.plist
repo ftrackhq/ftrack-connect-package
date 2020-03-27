@@ -13,8 +13,8 @@
 	<key>LSUIElement</key>
 	<string>1</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Ftrack Connect 1.1.2, copyright: Copyright (c) 2014 ftrack</string>
+	<string>Ftrack Connect 0.0.0, copyright: Copyright (c) 2014 ftrack</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.2</string>
+	<string>0.0.0</string>
 </dict>
 </plist>
