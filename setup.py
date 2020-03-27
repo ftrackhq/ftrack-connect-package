@@ -10,6 +10,7 @@ import opcode
 import logging
 import zipfile
 import shutil
+import plistlib
 
 # Package and dependencies versions.
 ftrack_connect_version = '1.1.8'
@@ -56,6 +57,27 @@ with open(os.path.join(
     VERSION = re.match(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
+
+# Update Info.plist file with version
+INFO_PLIST_FILE = os.path.join(RESOURCE_PATH, 'Info.plist')
+try:
+    pl = plistlib.readPlist(INFO_PLIST_FILE)
+    if 'CFBundleGetInfoString' in pl.keys():
+        pl["CFBundleShortVersionString"] = str(
+            'Ftrack Connect {}, copyright: Copyright (c) 2014 ftrack'.format(
+                VERSION
+            )
+        )
+    if 'CFBundleShortVersionString' in pl.keys():
+        pl["CFBundleShortVersionString"] = str(VERSION)
+
+    plistlib.writePlist(pl, INFO_PLIST_FILE)
+except Exception as e:
+    logging.warning(
+        'Could not change the version at Info.plist file. \n Error: {}'.format(
+            e
+        )
+    )
 
 external_connect_plugins = []
 for plugin in (
@@ -378,9 +400,7 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         configuration['options']['bdist_mac'] = {
             'iconfile': './logo.icns',
             'bundle_name': 'ftrack-connect',
-            'custom_info_plist': os.path.join(
-                RESOURCE_PATH, 'Info.plist'
-            )
+            'custom_info_plist': INFO_PLIST_FILE
         }
 
         configuration['options']['bdist_dmg'] = {
@@ -442,7 +462,7 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
         'xml.etree.ElementPath',
         'xml.etree.ElementInclude',
         'xml.dom'
-        
+
     ])
 
     configuration['options']['build_exe'] = {
@@ -464,7 +484,7 @@ if sys.platform in ('darwin', 'win32', 'linux2'):
             # Exclude distutils from virtualenv due to entire package with
             # sub-modules not being copied to virtualenv.
             'distutils',
-            
+
             # https://www.reddit.com/r/learnpython/comments/4rjkgj/no_file_named_sys_for_module_collectionssys/
             'collections.abc'
         ],

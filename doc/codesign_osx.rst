@@ -120,11 +120,11 @@ Sign the application (Automatically)
     $ chmod u+x postBuild_one.sh
     $ chmod u+x postBuild_two.sh
 
-3. Execute postBuild.sh
+3. Execute postBuild_one.sh
 
 .. code-block:: bash
 
-    $ ./postBuild.sh
+    $ ./postBuild_one.sh
 
 4. When finish, follow the instructions and if notarize process succeed
 execute postBuild_two.sh
