@@ -11,7 +11,6 @@ commonly used ftrack connect plugins.
 .. toctree::
     :maxdepth: 2
 
-    building
     release
     known-issues
 
