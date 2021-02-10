@@ -100,6 +100,8 @@ configuration = dict(
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
+    configuration.pop('install_requires')
+    configuration.pop('dependency_links')
     setup(**configuration)
 
 # Platform specific distributions.
