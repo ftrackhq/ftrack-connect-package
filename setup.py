@@ -627,8 +627,6 @@ def codesign_osx(create_dmg=True, notarize=True):
                         time.sleep(sleep_min*60)
 
 
-
-
 if sys.platform == 'darwin':
     import argparse
 

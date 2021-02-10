@@ -9,4 +9,18 @@ Meta package that provides support for building platform specific bundles of
 ftrack connect packages.
 
 
-build documentation with :
+Documentation
+=============
+
+Build documentation with ::
+
+  $ python setup.py build_sphinx
+
+
+
+Result documentation will be available in *build/doc* folder.
+
+
+
+Online documentation can be found in `read the docs <>`_.
+

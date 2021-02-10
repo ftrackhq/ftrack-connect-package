@@ -5,6 +5,15 @@
 
 import os
 import re
+import sys
+
+sys.path.append(
+    os.path.join(
+        os.path.dirname(__file__),
+        '..',
+        'source'
+    )
+)
 
 # -- General ------------------------------------------------------------------
 
@@ -18,6 +27,10 @@ extensions = [
     'lowdown'
 ]
 
+
+autodoc_mock_imports = [
+    'PySide2'
+]
 
 # The suffix of source filenames.
 source_suffix = '.rst'
