@@ -56,7 +56,7 @@ Build connect package with (specific build package)::
 
 
 Linux
-.....
+-----
 
 Build tar.gz release with::
 
@@ -102,24 +102,26 @@ Build msi release with::
 To codesign
 ...........
 
-    Once the msi is built, run the following commands to codesign it::
 
-        $signtool sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a <path to msi file>
+Once the msi is built, run the following commands to codesign it::
 
-    At the end of the process you'll then asked to provide your token password, once done, the package should get codesigned.
+    $signtool sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a <path to msi file>
+
+At the end of the process you'll then asked to provide your token password, once done, the package should get codesigned.
 
 
 MaxOs
 -----
-    Install appdmg to be able to create the dmg::
 
-        $ npm install -g appdmg
+Install appdmg to be able to create the dmg::
 
-    ..Note::
-        On latest version of OSX these envs are needed in order to properly build::
+    $ npm install -g appdmg
 
-            $ export CPPFLAGS=-I/usr/local/opt/openssl/include
-            $ export LDFLAGS=-L/usr/local/opt/openssl/lib
+..Note::
+    On latest version of OSX these envs are needed in order to properly build::
+
+        $ export CPPFLAGS=-I/usr/local/opt/openssl/include
+        $ export LDFLAGS=-L/usr/local/opt/openssl/lib
 
 
 To build without codesign
