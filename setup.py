@@ -103,7 +103,7 @@ if on_rtd:
     setup(**configuration)
 
 # Platform specific distributions.
-if sys.platform in ('darwin', 'win32', 'linux'):
+elif sys.platform in ('darwin', 'win32', 'linux'):
 
     connect_resource_hook = pkg_resources.resource_filename(
         pkg_resources.Requirement.parse('ftrack-connect'),
