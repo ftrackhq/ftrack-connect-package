@@ -76,16 +76,16 @@ configuration = dict(
     setup_requires=[
         # 'sphinx >= 1.2.2, < 2',
         # 'sphinx_rtd_theme >= 0.1.6, < 2',
-        'lowdown >= 0.1.0, < 1',
-        'cryptography',
-        'requests >= 2, <3',
-        'ftrack_action_handler == {0}'.format(
-            ftrack_action_handler_version
-        ),
-        'cx_freeze',
-        'pyside2==5.14.1',
-        'wheel',
-        'setuptools'
+        # 'lowdown >= 0.1.0, < 1',
+        # # 'cryptography',
+        # 'requests >= 2, <3',
+        # 'ftrack_action_handler == {0}'.format(
+        #     ftrack_action_handler_version
+        # ),
+        # 'cx_freeze',
+        # 'pyside2==5.14.1',
+        # 'wheel',
+        # 'setuptools'
     ],
     install_requires=[
         connect_install_require
