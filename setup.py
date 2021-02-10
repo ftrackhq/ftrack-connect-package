@@ -26,17 +26,8 @@ ftrack_connect_version = '2.0'
 ftrack_action_handler_version = '0.2.1'
 bundle_name = 'ftrack-connect'
 
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-
-if not on_rtd:
-    import PySide2
-    import shiboken2
-
-    pyside_path = os.path.join(PySide2.__path__[0])
-    shiboken_path = os.path.join(shiboken2.__path__[0])
 
 # Setup code
-
 logging.basicConfig(
     level=logging.INFO
 )
@@ -111,11 +102,17 @@ configuration = dict(
     python_requires=">=3, <4"
 )
 
-# to run : python setup.py install
-# setup(**configuration)
+
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 # Platform specific distributions.
-if sys.platform in ('darwin', 'win32', 'linux'):
+if sys.platform in ('darwin', 'win32', 'linux') and not on_rtd:
+
+    import PySide2
+    import shiboken2
+
+    pyside_path = os.path.join(PySide2.__path__[0])
+    shiboken_path = os.path.join(shiboken2.__path__[0])
 
     configuration['setup_requires'].append('cx_freeze')
 
