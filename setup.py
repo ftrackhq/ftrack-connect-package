@@ -25,11 +25,15 @@ import time
 ftrack_connect_version = '2.0'
 ftrack_action_handler_version = '0.2.1'
 bundle_name = 'ftrack-connect'
-import PySide2
-import shiboken2
 
-pyside_path = os.path.join(PySide2.__path__[0])
-shiboken_path = os.path.join(shiboken2.__path__[0])
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+if not on_rtd:
+    import PySide2
+    import shiboken2
+
+    pyside_path = os.path.join(PySide2.__path__[0])
+    shiboken_path = os.path.join(shiboken2.__path__[0])
 
 # Setup code
 
