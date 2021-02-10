@@ -50,11 +50,6 @@ with open(os.path.join(
         r'.*__version__ = \'(.*?)\'', _version_file.read(), re.DOTALL
     ).group(1)
 
-connect_resource_hook = pkg_resources.resource_filename(
-    pkg_resources.Requirement.parse('ftrack-connect'),
-    'ftrack_connect_resource/hook'
-)
-
 
 connect_install_require = 'ftrack-connect'.format(ftrack_connect_version)
 # TODO: Update when ftrack-connect released.
@@ -79,6 +74,8 @@ configuration = dict(
         '': 'source'
     },
     setup_requires=[
+        # 'sphinx >= 1.2.2, < 2',
+        # 'sphinx_rtd_theme >= 0.1.6, < 2',
         'lowdown >= 0.1.0, < 1',
         'cryptography',
         'requests >= 2, <3',
@@ -86,6 +83,7 @@ configuration = dict(
             ftrack_action_handler_version
         ),
         'cx_freeze',
+        'pyside2==5.14.1',
         'wheel',
         'setuptools'
     ],
@@ -105,7 +103,12 @@ if on_rtd:
     setup(**configuration)
 
 # Platform specific distributions.
-if sys.platform in ('darwin', 'win32', 'linux') and not on_rtd:
+if sys.platform in ('darwin', 'win32', 'linux'):
+
+    connect_resource_hook = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect'),
+        'ftrack_connect_resource/hook'
+    )
 
     import PySide2
     import shiboken2
