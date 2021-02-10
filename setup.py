@@ -74,18 +74,18 @@ configuration = dict(
         '': 'source'
     },
     setup_requires=[
-        # 'sphinx >= 1.2.2, < 2',
-        # 'sphinx_rtd_theme >= 0.1.6, < 2',
-        # 'lowdown >= 0.1.0, < 1',
-        # # 'cryptography',
-        # 'requests >= 2, <3',
-        # 'ftrack_action_handler == {0}'.format(
-        #     ftrack_action_handler_version
-        # ),
-        # 'cx_freeze',
-        # 'pyside2==5.14.1',
-        # 'wheel',
-        # 'setuptools'
+        'sphinx >= 1.2.2, < 2',
+        'sphinx_rtd_theme >= 0.1.6, < 2',
+        'lowdown >= 0.1.0, < 1',
+        'cryptography',
+        'requests >= 2, <3',
+        'ftrack_action_handler == {0}'.format(
+            ftrack_action_handler_version
+        ),
+        'cx_freeze',
+        'pyside2==5.14.1',
+        'wheel',
+        'setuptools'
     ],
     install_requires=[
         connect_install_require
@@ -100,6 +100,7 @@ configuration = dict(
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
+    configuration.pop('setup_requires')
     configuration.pop('install_requires')
     configuration.pop('dependency_links')
     setup(**configuration)
