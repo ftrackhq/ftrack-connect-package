@@ -135,19 +135,19 @@ Build with::
 To build and codesign
 .....................
 
-    Set your certificate id to **CODESIGN_IDENTITY**::
+Set your certificate id to **CODESIGN_IDENTITY**::
 
-        $ export CODESIGN_IDENTITY="<your_certificate_id_here>"
+    $ export CODESIGN_IDENTITY="<your_certificate_id_here>"
 
-    Set your Apple user name to **APPLE_USER_NAME**::
+Set your Apple user name to **APPLE_USER_NAME**::
 
-        $ export APPLE_USER_NAME="<your_apple_user>"
+    $ export APPLE_USER_NAME="<your_apple_user>"
 
-    Set your APP-specific password generated on https://appleid.apple.com/account/manage to the keychain under the name ftrack_connect_sign_pass.
+Set your APP-specific password generated on https://appleid.apple.com/account/manage to the keychain under the name ftrack_connect_sign_pass.
 
-    Execute the following build command and follow the instructions::
+Execute the following build command and follow the instructions::
 
-        $ python setup.py bdist_mac --codesign_frameworks --codesign --create_dmg --notarize
+    $ python setup.py bdist_mac --codesign_frameworks --codesign --create_dmg --notarize
 
 
 Known Issues
