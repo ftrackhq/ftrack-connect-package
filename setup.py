@@ -10,6 +10,7 @@ pyside2 = 5.14.1
 import shutil
 import sys
 import os
+import glob
 import re
 import opcode
 import logging
@@ -387,14 +388,18 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             'volume_label': 'ftrack-connect-{0}'.format(VERSION)
         }
 
+        libpyside_2_dylib = glob.glob(os.path.join(pyside_path, "libpyside2.abi*.dylib"))[0]
+        libshiboken_2_dylib = glob.glob(os.path.join(shiboken_path, "c.abi*.dylib"))[0]
+        
         include_files = [
             #Include Qt
             os.path.join(pyside_path, "Qt", "plugins", "platforms"),
             os.path.join(pyside_path, "Qt", "plugins", "imageformats"),
             os.path.join(pyside_path, "Qt", "plugins", "iconengines"),
             #Include PySide and Shiboken libs
-            os.path.join(pyside_path, "libpyside2.abi3.5.14.dylib"),
-            os.path.join(shiboken_path, "libshiboken2.abi3.5.14.dylib")
+            
+            libpyside_2_dylib,
+            libshiboken_2_dylib
         ]
 
     elif sys.platform == 'linux':
