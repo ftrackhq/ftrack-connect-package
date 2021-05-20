@@ -389,7 +389,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         }
 
         libpyside_2_dylib = glob.glob(os.path.join(pyside_path, "libpyside2.abi*.dylib"))[0]
-        libshiboken_2_dylib = glob.glob(os.path.join(shiboken_path, "c.abi*.dylib"))[0]
+        libshiboken_2_dylib = glob.glob(os.path.join(shiboken_path, "libshiboken2.abi*.dylib"))[0]
         
         include_files = [
             #Include Qt
