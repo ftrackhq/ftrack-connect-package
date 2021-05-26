@@ -303,7 +303,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         # Force Qt to be included.
         bin_includes = [
             "PySide2",
-            "shiboken2",
+            "shiboken2.shiboken2",
             "encodings"
         ]
 
@@ -466,7 +466,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         "zip_include_packages": [
             'ftrack_connect',
             "PySide2",
-            "shiboken2",
+            "shiboken2.shiboken2",
             "Qt",
             'PySide2.QtSvg',
             'PySide2.QtXml',
