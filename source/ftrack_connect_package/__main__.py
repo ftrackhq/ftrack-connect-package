@@ -6,6 +6,7 @@ import os
 import argparse
 import logging
 from pathlib import Path
+import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -146,6 +147,38 @@ def _validatePythonScript(path):
     return path and path.endswith('.py') and os.path.exists(path)
 
 
+class PipModule(object):
+
+    @staticmethod
+    def install(module_name, module_version=None):
+        if module_version:
+            module_name = '{}=={}'.format(module_name, module_version)
+
+        subprocess.check_call(
+            [
+                sys.executable, '-m', 'pip', 'install', module_name
+            ]
+        )
+
+    @staticmethod
+    def uninstall(module_name):
+        subprocess.check_call(
+            [
+                sys.executable, '-m', 'pip', 'uninstall', module_name
+            ]
+        )
+
+    @staticmethod
+    def show(module_name):
+        subprocess.check_call(
+            [
+                sys.executable, '-m', 'pip', 'show', module_name
+            ]
+        )
+
+
+
+
 if __name__ == '__main__':
     arguments = sys.argv[1:]
 
@@ -170,6 +203,12 @@ if __name__ == '__main__':
         help='Start connect window in hidden mode.',
         action='store_true'
     )
+
+    subparsers = parser.add_subparsers()
+    module_parser = subparsers.add_parser('module', help='help module command')
+    module_parser.add_argument('--install', type=PipModule.install, help='help module install')
+    module_parser.add_argument('--uninstall', type=PipModule.uninstall, help='help module uninstall')
+    module_parser.add_argument('--show', type=PipModule.show, help='help module show')
 
     parsedArguments, unknownArguments = parser.parse_known_args(arguments)
 
