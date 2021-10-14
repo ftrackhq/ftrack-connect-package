@@ -80,13 +80,6 @@ def autodoc_skip(app, what, name, obj, skip, options):
 
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'ftrack': ('http://ftrack.rtd.ftrack.com/en/latest/', None),
-    'ftrack-connect-photoshop': (
-        'http://ftrack-connect-photoshop.rtd.ftrack.com/en/latest/', None
-    ),
-    'ftrack-connect-after-effects': (
-        'http://ftrack-connect-after-effects.rtd.ftrack.com/en/latest/', None
-    )
 }
 
 
