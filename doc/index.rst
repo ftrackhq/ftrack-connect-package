@@ -12,6 +12,7 @@ commonly used ftrack connect plugins.
     :maxdepth: 2
 
     release
+    build
     known-issues
 
 ******************
