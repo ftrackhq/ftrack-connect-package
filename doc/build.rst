@@ -16,8 +16,32 @@ In this section we'll have a closer look on how to.
 Building from sources in vitual environments
 ============================================
 
+Building from sources requires a slightly more complex setup, but ensure full control over the release process.
 
+requirements
+------------
 
+1) python3 interpreter installed and avialable on $PATH
+2) an activated virtual environment created with python3 
+3) source code of ftrack-connect
+4) source code of ftrack-connect-package
+
+instal ftrack-connect
+---------------------
+
+.. note::
+
+    This process will provide you with ftrack-connect executable installed in the virtual environment.
+
+1) cd into ftrack-connect folder
+2) install dependencies with : python -m pip install -r requirements.txt --force
+
+package ftrack-connect
+---------------------
+
+1) cd into ftrack-connect-package folder
+2) install dependencies with : python -m pip install -r requirements.txt --force
+3_ 
 
 
 Building using dockers
