@@ -55,7 +55,7 @@ embedded_plugins = [
 
 
 
-bundle_name = 'ftrack Connect'
+bundle_name = 'ftrackConnect'
 import PySide2
 import shiboken2
 
@@ -118,7 +118,7 @@ __version__ = {version!r}
 
 # General configuration.
 configuration = dict(
-    name='ftrack Connect',
+    name='ftrackConnect',
     use_scm_version={
         'write_to': 'source/ftrack_connect_package/_version.py',
         'write_to_template': version_template,
@@ -303,7 +303,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         configuration['options']['bdist_msi'] = {
             'upgrade_code': '{6068BD18-65D1-47FC-BE5E-06AA5189C9CB}',
             'initial_target_dir': r'[ProgramFilesFolder]\{0}-{1}'.format(
-                'ftrack Connect', VERSION
+                'ftrackConnect', VERSION
             ),
             'data': {'Shortcut': shortcut_table},
             'all_users': True,
@@ -341,7 +341,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
                 pl = plistlib.load(file)
             if 'CFBundleGetInfoString' in pl.keys():
                 pl["CFBundleShortVersionString"] = str(
-                    'ftrack Connect {}, copyright: Copyright (c) 2014-2020 ftrack'.format(
+                    'ftrackConnect {}, copyright: Copyright (c) 2014-2020 ftrack'.format(
                         VERSION
                     )
                 )
@@ -408,7 +408,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
 
         configuration['options']['bdist_dmg'] = {
             'applications_shortcut': False,
-            'volume_label': 'ftrack Connect {0}'.format(VERSION)
+            'volume_label': 'ftrackConnect {0}'.format(VERSION)
         }
 
         include_files = [

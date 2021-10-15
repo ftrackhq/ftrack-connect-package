@@ -71,7 +71,7 @@ Windows
 
 .. code-block::
 
-    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/dist/ftrack Connect-2.0-win64.msi" .
+    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/dist/ftrackConnect-2.0-win64.msi" .
 
 
 Linux C7
@@ -79,7 +79,7 @@ Linux C7
 
 .. code-block::
 
-    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/build/ftrack Connect-2.0-C7.tar.gz" .
+    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/build/ftrackConnect-2.0-C7.tar.gz" .
 
 
 Linux C8
@@ -87,7 +87,7 @@ Linux C8
 
 .. code-block::
 
-    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/build/ftrack Connect-2.0-C8.tar.gz" .
+    docker cp CONTAINER ID:"/usr/src/app/ftrack-connect-package/build/ftrackConnect-2.0-C8.tar.gz" .
 
 
 Debug
