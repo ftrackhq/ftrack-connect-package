@@ -13,6 +13,7 @@ In this section we'll have a closer look on how to.
 2) **Building using docker**
 
 
+
 Building from sources in vitual environments
 ============================================
 
@@ -32,8 +33,8 @@ instal ftrack-connect
 .. note::
 
     This process will provide you with ftrack-connect executable installed in the virtual environment.
-
-1) cd into ftrack-connect folder
+ 
+1) cd into ftrack-connect folder - :ref:`ftrack-connect:installing`
 2) install dependencies with : python -m pip install -r requirements.txt --force
 
 package ftrack-connect
@@ -151,6 +152,18 @@ Execute the following build command and follow the instructions::
 Building using dockers
 ======================
 
+As part of this repository, 3 Dockerfile are available to sendbox the build of ftrack-connect-package.
+
+* C7.Dockerfile    [centos 7]
+* C8.Dockerfile    [centos 8]
+* Win10.Dockerfile [windows 10]
+
+For further informations, please use the README file contained in the **docker** folder.
+
+.. note::
+
+    In order to build in docker windows, you need to have a windows 10 Pro activated and configured.
+
 .. note:: 
     
     Docker builds are currently available only for Linux (Centos 7 and 8) and Windows. 
@@ -188,8 +201,6 @@ Linux C8
 .. code-block::
 
     docker build --rm -t ftrack/connect-package:c8 -f C8.Dockerfile .
-
-
 
 
 
