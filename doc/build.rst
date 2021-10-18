@@ -23,8 +23,8 @@ requirements
 
 1) python3 interpreter installed and avialable on $PATH
 2) an activated virtual environment created with python3 
-3) source code of ftrack-connect
-4) source code of ftrack-connect-package
+3) source code of `ftrack-connect <git@bitbucket.org:ftrack/ftrack-connect.git>`_ checked out to the correct branch (backlog/connect-2/story)
+4) source code of `ftrack-connect-package <git@bitbucket.org:ftrack/ftrack-connect-package.git>`_ checked out to the correct branch (backlog/connect-2/story)
 
 instal ftrack-connect
 ---------------------
@@ -37,11 +37,115 @@ instal ftrack-connect
 2) install dependencies with : python -m pip install -r requirements.txt --force
 
 package ftrack-connect
----------------------
+----------------------
+
+.. warning::
+
+    ( Windows only )
+
+    Visual studio and `c++ build tools <https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019>`_ should be installed before install the requirements.
+    Reference: (`link <https://stackoverflow.com/questions/40018405/cannot-open-include-file-io-h-no-such-file-or-directory>`_)
 
 1) cd into ftrack-connect-package folder
 2) install dependencies with : python -m pip install -r requirements.txt --force
-3_ 
+3) run the packaging:
+
+
+Linux
+.....
+
+Build tar.gz release with::
+
+    $ python setup.py build_exe
+
+
+
+Once build the result will be available in build/exe.linux-x86_64-**<PYTHON VERSION>**
+
+To generate the tar.gz run from the build folder::
+
+    $ tar -zcvf ftrack-connect-package-<PACKAGE VERSION>-<PLATFORM>.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
+
+
+Generate the md5 with::
+
+    $ md5sum ftrack-connect-package-<PACKAGE VERSION>-<PLATFORM>.tar.gz > ftrack-connect-package-<PACKAGE VERSION>-<PLATFORM>.tar.gz.md5
+
+
+.. note::
+
+    Please remember to set **<PLATFORM>** to either:
+
+    * C7 for Centos 7 compatible releases.
+    * C8 for centos 8 compatible releases.
+
+
+
+
+Windows
+.......
+
+Build msi release with::
+
+    $ python setup.py bdist_msi
+
+
+.. note::
+
+    Codesign process works only on machine where the key certificate is loaded and available.
+    Codesign also require to have the signtool.exe installed and available.
+
+
+To codesign
+^^^^^^^^^^^
+
+
+Once the msi is built, run the following commands to codesign it::
+
+    $ signtool sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a <path to msi file>
+
+At the end of the process you'll then asked to provide your token password, once done, the package should get codesigned.
+
+
+MacOs
+.....
+
+Install appdmg to be able to create the dmg::
+
+    $ npm install -g appdmg
+
+.. note::
+
+    On latest version of OSX these envs are needed in order to properly build::
+
+        $ export CPPFLAGS=-I/usr/local/opt/openssl/include
+        $ export LDFLAGS=-L/usr/local/opt/openssl/lib
+
+
+To build without codesign
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Build with::
+
+    $ python setup.py bdist_mac
+
+
+To build and codesign
+^^^^^^^^^^^^^^^^^^^^^
+
+Set your certificate id to **CODESIGN_IDENTITY**::
+
+    $ export CODESIGN_IDENTITY="<your_certificate_id_here>"
+
+Set your Apple user name to **APPLE_USER_NAME**::
+
+    $ export APPLE_USER_NAME="<your_apple_user>"
+
+Set your APP-specific password generated on https://appleid.apple.com/account/manage to the keychain under the name ftrack_connect_sign_pass.
+
+Execute the following build command and follow the instructions::
+
+    $ python setup.py bdist_mac --codesign_frameworks --codesign --create_dmg --notarize
 
 
 Building using dockers
