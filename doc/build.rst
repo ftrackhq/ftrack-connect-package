@@ -22,7 +22,7 @@ Building from sources requires a slightly more complex setup, but ensure full co
 requirements
 ------------
 
-1) python3 interpreter installed and avialable on $PATH
+1) `python3 <https://www.python.org/downloads/>`_ interpreter installed and avialable on $PATH 
 2) an activated virtual environment created with python3 
 3) source code of `ftrack-connect <git@bitbucket.org:ftrack/ftrack-connect.git>`_ checked out to the correct branch (backlog/connect-2/story)
 4) source code of `ftrack-connect-package <git@bitbucket.org:ftrack/ftrack-connect-package.git>`_ checked out to the correct branch (backlog/connect-2/story)
@@ -114,13 +114,6 @@ MacOs
 Install appdmg to be able to create the dmg::
 
     $ npm install -g appdmg
-
-.. note::
-
-    On latest version of OSX these envs are needed in order to properly build::
-
-        $ export CPPFLAGS=-I/usr/local/opt/openssl/include
-        $ export LDFLAGS=-L/usr/local/opt/openssl/lib
 
 
 To build without codesign
