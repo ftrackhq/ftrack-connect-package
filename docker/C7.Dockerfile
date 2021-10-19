@@ -32,4 +32,4 @@ RUN python -m pip install -r requirements.txt
 RUN python setup.py build
 
 WORKDIR /usr/src/app/ftrack-connect-package/build
-RUN tar -czvf ftrack\ Connect-2.0-C7.tar.gz exe.linux-x86_64-3.6
+RUN tar -czvf ftrackConnect-2.0-C7.tar.gz exe.linux-x86_64-3.6 --transform 's/exe.linux-x86_64-3.6/ftrackConnect/'
