@@ -55,7 +55,7 @@ embedded_plugins = [
 
 
 
-bundle_name = 'ftrackConnect'
+bundle_name = 'ftrack Connect'
 import PySide2
 import shiboken2
 
