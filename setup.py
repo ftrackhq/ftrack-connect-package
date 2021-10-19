@@ -408,7 +408,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
 
         configuration['options']['bdist_dmg'] = {
             'applications_shortcut': False,
-            'volume_label': 'ftrack Connect {0}'.format(VERSION)
+            'volume_label': 'ftrackConnect {0}'.format(VERSION)
         }
 
         include_files = [
@@ -619,7 +619,7 @@ def codesign_osx(create_dmg=True, notarize=True):
     else:
         logging.info(' Application signed')
     if create_dmg:
-        dmg_name = '{0}-{1}.dmg'.format(bundle_name, VERSION)
+        dmg_name = '{0}-{1}.dmg'.format("ftrackConnect", VERSION)
         dmg_path = os.path.join(BUILD_PATH, dmg_name)
         dmg_command = (
             'appdmg resource/appdmg.json "{}"'.format(dmg_path)
