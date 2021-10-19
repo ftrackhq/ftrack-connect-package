@@ -5,7 +5,7 @@
 Build and Release
 #################
 
-ftack Connect can be packaged and released as binary though different systems.
+**ftack Connect** can be packaged and released as binary through different systems.
 In this section we'll have a closer look on how to.
 
 
@@ -35,7 +35,9 @@ instal ftrack-connect
     This process will provide you with ftrack-connect executable installed in the virtual environment.
  
 1) cd into ftrack-connect folder - :ref:`ftrack-connect:installing`
-2) install dependencies with : python -m pip install -r requirements.txt --force
+2) install dependencies with :: 
+    
+    $ python -m pip install -r requirements.txt --force
 
 package ftrack-connect
 ----------------------
@@ -48,8 +50,11 @@ package ftrack-connect
     Reference: (`link <https://stackoverflow.com/questions/40018405/cannot-open-include-file-io-h-no-such-file-or-directory>`_)
 
 1) cd into ftrack-connect-package folder
-2) install dependencies with : python -m pip install -r requirements.txt --force
-3) run the packaging:
+2) install dependencies with ::
+    
+    $ python -m pip install -r requirements.txt --force
+    
+3) run the packaging (see below for details for each platform)
 
 
 Linux
