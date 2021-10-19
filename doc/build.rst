@@ -5,7 +5,7 @@
 Build and Release
 #################
 
-**ftack Connect** can be packaged and released as binary through different systems.
+**ftrack Connect** can be packaged and released as binary through different systems.
 In this section we'll have a closer look on how to.
 
 
@@ -100,6 +100,12 @@ Build msi release with::
 
     Codesign process works only on machine where the key certificate is loaded and available.
     Codesign also require to have the signtool.exe installed and available.
+
+
+.. note::
+
+    In case you are after a redistributeable exec file, you can run **bdist_msi** and find the 
+    files in the **build/exe.win-amd64-3.7** folder rather than **dist** one.
 
 
 To codesign
