@@ -303,7 +303,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         configuration['options']['bdist_msi'] = {
             'upgrade_code': '{6068BD18-65D1-47FC-BE5E-06AA5189C9CB}',
             'initial_target_dir': r'[ProgramFilesFolder]\{0}-{1}'.format(
-                'ftrackConnect', VERSION
+                bundle_name, VERSION
             ),
             'data': {'Shortcut': shortcut_table},
             'all_users': True,
@@ -408,7 +408,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
 
         configuration['options']['bdist_dmg'] = {
             'applications_shortcut': False,
-            'volume_label': 'ftrackConnect {0}'.format(VERSION)
+            'volume_label': '{0} {1}'.format(bundle_name, VERSION)
         }
 
         include_files = [
@@ -619,7 +619,7 @@ def codesign_osx(create_dmg=True, notarize=True):
     else:
         logging.info(' Application signed')
     if create_dmg:
-        dmg_name = '{0}-{1}.dmg'.format("ftrackConnect", VERSION)
+        dmg_name = '{0}-{1}.dmg'.format(bundle_name, VERSION)
         dmg_path = os.path.join(BUILD_PATH, dmg_name)
         dmg_command = (
             'appdmg resource/appdmg.json "{}"'.format(dmg_path)
