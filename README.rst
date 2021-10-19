@@ -14,14 +14,14 @@ Clone the public repository::
     $ git clone git@bitbucket.org:ftrack/ftrack-connect-package.git
 
 Or download and extract the
-`zipball <https://bitbucket.org/ftrack/ftrack-connect-package/get/master.zip>`_
+`zipball <https://bitbucket.org/ftrack/ftrack-connect-package/get/<tag>.zip>`_
 
 Clone ftrack connect public repository::
 
     $ git clone git@bitbucket.org:ftrack/ftrack-connect.git
 
 Or download and extract the
-`zipball <https://bitbucket.org/ftrack/ftrack-connect/get/master.zip>`_
+`zipball <https://bitbucket.org/ftrack/ftrack-connect/get/<tag>.zip>`_
 
 
 Create and activate a virtual environment with python3.7
@@ -43,9 +43,6 @@ Install dependencies with::
 
     Reference: (`link <https://stackoverflow.com/questions/40018405/cannot-open-include-file-io-h-no-such-file-or-directory>`_)
 
-.. note::
-
-    cx_freeze branch installation is temporary until cx_freeze > 6.5 version is released. ( `3.7 <https://github.com/marcelotduarte/cx_Freeze/pull/887>`_ )
 
 Install ftrack connect::
 
