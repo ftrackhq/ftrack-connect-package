@@ -7,6 +7,14 @@ Releases
 
 .. release:: Upcoming
 
+    .. change:: changed
+
+        Improved docker builds for Linux.
+    
+    .. change:: changed
+
+        Release is not been renamed to ftrack Connect.
+
     .. change:: fixed
 
         Connect package does not provide a consistent ProductCode when generating msi installer.
@@ -14,6 +22,12 @@ Releases
     .. change:: fixed
 
         Cinesync action error if context is not provided.
+
+
+.. warning::
+
+    From this version the support for ftrack-connect 1.X is dropped, and
+    only ftrack-conenct 2.0 will be supported up to the integration EOL.
 
 
 .. release:: 1.1.2
