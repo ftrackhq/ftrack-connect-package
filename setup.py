@@ -24,14 +24,13 @@ from setuptools_scm import get_version
 
 # Embedded plugins.
 
-
-
 embedded_plugins = [
     # new/updated releases
-    'ftrack-application-launcher-1.0.1.zip',
+    'ftrack-application-launcher-1.0.1-cinsyncplay.zip',
     'ftrack-connect-nuke-studio-2.5.0.zip',
     'ftrack-connect-rv-5.0.zip',
-    'ftrack-connect-cinema-4d-0.2.1.zip'
+    'ftrack-connect-cinema-4d-0.2.1.zip',
+    'ftrack-user-location-0.2.0.zip'
 
     #legacy integrations ported 
     # 'ftrack-connect-nuke-1.4.0.zip',
