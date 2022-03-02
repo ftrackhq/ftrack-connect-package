@@ -2,7 +2,7 @@
 # :copyright: Copyright (c) 2020 ftrack
 #
 
-FROM inveniosoftware/centos7-python:3.6
+FROM inveniosoftware/centos7-python:3.9
 LABEL ftrack AB
 
 RUN yum -y update

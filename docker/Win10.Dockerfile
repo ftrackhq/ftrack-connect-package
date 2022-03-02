@@ -3,7 +3,7 @@
 # :copyright: Copyright (c) 2020 ftrack
 #
 
-FROM winamd64/python:3.7
+FROM winamd64/python:3.9
 LABEL ftrack AB
 
 # Install MinGit
@@ -39,9 +39,11 @@ RUN python -m pip install --upgrade pip
 
 # install connect
 WORKDIR /usr/src/app
-RUN git clone -b backlog/connect-2/story https://bitbucket.org/ftrack/ftrack-connect.git
+RUN git clone -b backlog/connect-2/CY2022 https://bitbucket.org/ftrack/ftrack-connect.git
 WORKDIR /usr/src/app/ftrack-connect
-RUN git fetch 
+RUN git fetch
+RUN git fetch --tags
+
 RUN python -m pip install -r requirements.txt
 
 # ensure pyside2-rcc and pyside2-uic are available in PATH
@@ -51,9 +53,10 @@ RUN python setup.py install
 
 # install connect package
 WORKDIR /usr/src/app
-RUN git clone -b backlog/connect-2/story https://bitbucket.org/ftrack/ftrack-connect-package.git
+RUN git clone -b backlog/connect-2/CY2022 https://bitbucket.org/ftrack/ftrack-connect-package.git
 WORKDIR /usr/src/app/ftrack-connect-package
 RUN git fetch 
+RUN git fetch --tags
 
 RUN python -m pip install -r requirements.txt
 RUN python setup.py bdist_msi

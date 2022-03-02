@@ -474,7 +474,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
     configuration['options']['build_exe'] = {
         'packages': ['ftrack_connect'],
         'includes': includes,
-        # "zip_include_packages": [
+        "zip_include_packages": [
         #     # 'ftrack_connect',
         #     "PySide2",
         #     "shiboken2",
@@ -488,7 +488,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         #     'http',
         #     'urllib.parser',
         #     'webbrowser'
-        # ],
+        ],
         'excludes': [
             "dbm.gnu",
             "tkinter",

@@ -9,6 +9,8 @@ import argparse
 logger = logging.getLogger(__name__)
 
 os.environ['QT_API'] = 'pyside2'
+os.environ['FORCE_QT_API'] = 'pyside2'
+
 
 class DummyStream:
     ''' dummyStream behaves like a stream but does nothing. '''
@@ -32,7 +34,7 @@ except Exception:
 
     class SysWrapper(object):
         def __getattribute__(self, item):
-            if item is 'stderr':
+            if item == 'stderr':
                 return DummyStream()
             return getattr(sys, item)
 
