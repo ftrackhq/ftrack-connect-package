@@ -1,12 +1,6 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2014 ftrack
 
-'''
-requires :
-pyside2 = 5.14.1
-
-
-'''
 import shutil
 import sys
 import os
@@ -23,7 +17,6 @@ from setuptools_scm import get_version
 
 
 # Embedded plugins.
-
 
 
 embedded_plugins = [

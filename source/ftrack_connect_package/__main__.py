@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 import sys
 import argparse
+import traceback
+
 logger = logging.getLogger(__name__)
 
 os.environ['QT_API'] = 'pyside2'
@@ -194,6 +196,10 @@ if __name__ == '__main__':
         exec(open(parsedArguments.script).read())
         raise SystemExit()
 
-    raise SystemExit(
-        ftrack_connect.__main__.main(arguments=arguments)
-    )
+    try:
+        raise SystemExit(
+            ftrack_connect.__main__.main(arguments=arguments)
+        )
+    except Exception as err:
+        traceback.print_exc(str(err))
+
