@@ -8,6 +8,8 @@ import sys
 import argparse
 logger = logging.getLogger(__name__)
 
+os.environ['QT_API'] = 'pyside2'
+
 class DummyStream:
     ''' dummyStream behaves like a stream but does nothing. '''
     def __init__(self): pass

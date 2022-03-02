@@ -126,7 +126,7 @@ configuration = dict(
         'setuptools_scm'
     ],
     options={},
-    python_requires=">=3, <4"
+    python_requires=">=3.9, <4"
 )
 
 
@@ -474,21 +474,21 @@ if sys.platform in ('darwin', 'win32', 'linux'):
     configuration['options']['build_exe'] = {
         'packages': ['ftrack_connect'],
         'includes': includes,
-        "zip_include_packages": [
-            # 'ftrack_connect',
-            "PySide2",
-            "shiboken2",
-            "Qt",
-            'PySide2.QtSvg',
-            'PySide2.QtXml',
-            'PySide2.QtCore',
-            'PySide2.QtWidgets',
-            'PySide2.QtGui',
-            "encodings",
-            'http',
-            'urllib.parser',
-            'webbrowser'
-        ],
+        # "zip_include_packages": [
+        #     # 'ftrack_connect',
+        #     "PySide2",
+        #     "shiboken2",
+        #     "Qt",
+        #     'PySide2.QtSvg',
+        #     'PySide2.QtXml',
+        #     'PySide2.QtCore',
+        #     'PySide2.QtWidgets',
+        #     'PySide2.QtGui',
+        #     "encodings",
+        #     'http',
+        #     'urllib.parser',
+        #     'webbrowser'
+        # ],
         'excludes': [
             "dbm.gnu",
             "tkinter",
@@ -498,6 +498,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         ],
         'include_files': include_files,
         'bin_includes': bin_includes,
+        'include_msvcr': True
     }
 
 
