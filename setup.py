@@ -1,6 +1,12 @@
 # :coding: utf-8
 # :copyright: Copyright (c) 2014 ftrack
 
+'''
+requires :
+pyside2 = 5.14.1
+
+
+'''
 import shutil
 import sys
 import os
@@ -19,9 +25,10 @@ from setuptools_scm import get_version
 # Embedded plugins.
 
 
+
 embedded_plugins = [
     # new/updated releases
-    'ftrack-connect-plugin-manager-0.1.1.zip'
+    'ftrack-connect-plugin-manager-0.1.3.zip'
 ]
 
 
@@ -273,8 +280,8 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         # package is upgraded when installing a new version.
         configuration['options']['bdist_msi'] = {
             'upgrade_code': '{6068BD18-65D1-47FC-BE5E-06AA5189C9CB}',
-            'initial_target_dir': r'[ProgramFilesFolder]\{0}-{1}'.format(
-                'ftrack Connect', VERSION
+            'initial_target_dir': r'[ProgramFilesFolder]\{0}'.format(
+                'ftrack Connect'
             ),
             'data': {'Shortcut': shortcut_table},
             'all_users': True,
@@ -379,7 +386,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
 
         configuration['options']['bdist_dmg'] = {
             'applications_shortcut': False,
-            'volume_label': 'ftrack Connect {0}'.format(VERSION)
+            'volume_label': 'ftrack Connect'
         }
 
         include_files = [
@@ -461,26 +468,27 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         'html.parser',
         'cgi',
         'concurrent',
-        'concurrent.futures'
+        'concurrent.futures',
+        'darkdetect'
     ])
 
     configuration['options']['build_exe'] = {
         'packages': ['ftrack_connect'],
         'includes': includes,
         "zip_include_packages": [
-        #     # 'ftrack_connect',
-        #     "PySide2",
-        #     "shiboken2",
-        #     "Qt",
-        #     'PySide2.QtSvg',
-        #     'PySide2.QtXml',
-        #     'PySide2.QtCore',
-        #     'PySide2.QtWidgets',
-        #     'PySide2.QtGui',
-        #     "encodings",
-        #     'http',
-        #     'urllib.parser',
-        #     'webbrowser'
+            # 'ftrack_connect',
+            "PySide2",
+            "shiboken2",
+            "Qt",
+            'PySide2.QtSvg',
+            'PySide2.QtXml',
+            'PySide2.QtCore',
+            'PySide2.QtWidgets',
+            'PySide2.QtGui',
+            "encodings",
+            'http',
+            'urllib.parser',
+            'webbrowser'
         ],
         'excludes': [
             "dbm.gnu",
@@ -566,6 +574,7 @@ def codesign_osx(create_dmg=True, notarize=True):
     :note: Important to have an APP-specific password generated on
     https://appleid.apple.com/account/manage
     and have it linked on the keychain under ftrack_connect_sign_pass
+    For more information, see https://sites.google.com/ftrack.com/handbook/solutions/integrations/deployment?authuser=0
     '''
     #
     logging.info(
@@ -576,7 +585,7 @@ def codesign_osx(create_dmg=True, notarize=True):
     bundle_path = os.path.join(BUILD_PATH, bundle_name + ".app")
     codesign_command = (
         'codesign --verbose --force --options runtime --timestamp --deep --strict '
-        '--entitlements "{}" --sign $CODESIGN_IDENTITY '
+        '--entitlements "{}" --sign "$CODESIGN_IDENTITY" '
         '"{}"'.format(entitlements_path, bundle_path)
     )
     codesign_result = os.system(codesign_command)
@@ -684,10 +693,10 @@ def codesign_osx(create_dmg=True, notarize=True):
                             sleep_min = float(response)
                         except Exception as e:
                             exit_loop = True
-                            raise (
+                            raise Exception(
                                 "Could not read the input minutes, please check "
                                 "the notarize manually and staple the code after. \n"
-                                "Error: {}".format(e)
+                                "Response: {}".format(response)
                             )
                         exit_loop = False
                         time.sleep(sleep_min*60)
@@ -703,7 +712,8 @@ if sys.platform == 'darwin':
         accepted arguments for connect build. ''',
         epilog='Make sure you have the CODESIGN_IDENTITY and APPLE_USER_NAME '
                'environment variables and the ftrack_connect_sign_pass on the '
-               'keychain before codesign.'
+               'keychain before codesign. Also make sure to have appdmg installed '
+                'by running "npm install -g appdmg"'
     )
     parser.add_argument(
         '-cf', '--codesign_frameworks',
