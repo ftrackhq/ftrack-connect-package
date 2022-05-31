@@ -25,10 +25,7 @@ from setuptools_scm import get_version
 
 
 
-embedded_plugins = [
-    # new/updated releases
-    'ftrack-connect-plugin-manager-0.1.3.zip'
-]
+embedded_plugins = []
 
 
 
@@ -297,6 +294,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             (qt_platforms_path, 'lib/Qt/plugins/platforms'),
             (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
             (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
+            (qt_iconengines_path, 'lib/Qt/plugins/webview'),
         ]
         #Extend include_files with resources list
         include_files.extend(resources)
@@ -353,7 +351,10 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             os.path.join(pyside_path, "Qt", "lib", "QtDBus.framework"),
             os.path.join(pyside_path, "Qt", "lib", "QtWidgets.framework"),
             os.path.join(pyside_path, "Qt", "lib", "QtQml.framework"),
-            os.path.join(pyside_path, "Qt", "lib", "QtPrintSupport.framework")
+            os.path.join(pyside_path, "Qt", "lib", "QtPrintSupport.framework"),
+            os.path.join(pyside_path, "Qt", "lib", "QtWebEngineWidgets.framework"),
+            os.path.join(pyside_path, "Qt", "lib", "QtWebEngine.framework"),
+            os.path.join(pyside_path, "Qt", "lib", "QtWebEngineCore.framework"),
         ]
 
         # include_resources is an argument of bdist_mac only, all the listed
@@ -393,6 +394,8 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             os.path.join(pyside_path, "Qt", "plugins", "platforms"),
             os.path.join(pyside_path, "Qt", "plugins", "imageformats"),
             os.path.join(pyside_path, "Qt", "plugins", "iconengines"),
+            os.path.join(pyside_path, "Qt", "plugins", "webview"),
+
             #Include PySide and Shiboken libs
             os.path.join(pyside_path, "libpyside2.abi3.5.14.dylib"),
             os.path.join(shiboken_path, "libshiboken2.abi3.5.14.dylib")
@@ -413,12 +416,14 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         qt_platforms_path = os.path.join(pyside_path, "Qt", "plugins", "platforms")
         qt_imageformats_path = os.path.join(pyside_path, "Qt", "plugins", "imageformats")
         qt_iconengines_path = os.path.join(pyside_path, "Qt", "plugins", "iconengines")
+        qt_webview_path = os.path.join(pyside_path, "Qt", "plugins", "webview")
 
         include_files = [
             # Include Qt
             (qt_platforms_path, 'lib/Qt/plugins/platforms'),
             (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
-            (qt_iconengines_path, 'lib/Qt/plugins/iconengines')
+            (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
+            (qt_webview_path, 'lib/Qt/plugins/webview')
             ]
 
         # Extend include_files with resources list
@@ -453,6 +458,9 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         'PySide2.QtCore',
         'PySide2.QtWidgets',
         'PySide2.QtGui',
+        'PySide2.QtWebEngine',
+        'PySide2.QtWebEngineCore',
+        'PySide2.QtWebEngineWidgets',
         'ftrack_action_handler',
         'ftrack_action_handler.action',
         'ssl',
@@ -484,7 +492,10 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             'PySide2.QtCore',
             'PySide2.QtWidgets',
             'PySide2.QtGui',
-            "encodings",
+            'PySide2.QtWebEngine',
+            'PySide2.QtWebEngineCore',
+            'PySide2.QtWebEngineWidgets',
+            'encodings',
             'http',
             'urllib.parser',
             'webbrowser',
