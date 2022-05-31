@@ -285,17 +285,19 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         }
 
         # Qt plugins paths
-        qt_platforms_path = os.path.join(pyside_path, "plugins", "platforms")
-        qt_imageformats_path = os.path.join(pyside_path, "plugins", "imageformats")
-        qt_iconengines_path = os.path.join(pyside_path, "plugins", "iconengines")
-
-        include_files = [
-            # Include Qt
-            (qt_platforms_path, 'lib/Qt/plugins/platforms'),
-            (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
-            (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
-            (qt_iconengines_path, 'lib/Qt/plugins/webview'),
-        ]
+        # qt_platforms_path = os.path.join(pyside_path, "plugins", "platforms")
+        # qt_imageformats_path = os.path.join(pyside_path, "plugins", "imageformats")
+        # qt_iconengines_path = os.path.join(pyside_path, "plugins", "iconengines")
+        # qt_webview_path = os.path.join(pyside_path, "plugins", "webview")
+        # 
+        # include_files = [
+        #     # Include Qt
+        #     (qt_platforms_path, 'lib/Qt/plugins/platforms'),
+        #     (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
+        #     (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
+        #     (qt_webview_path, 'lib/Qt/plugins/webview'),
+        # ]
+        include_files = []
         #Extend include_files with resources list
         include_files.extend(resources)
         include_files.extend(include_connect_plugins)
@@ -412,20 +414,20 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             )
         )
 
-        # Qt plugins paths
-        qt_platforms_path = os.path.join(pyside_path, "Qt", "plugins", "platforms")
-        qt_imageformats_path = os.path.join(pyside_path, "Qt", "plugins", "imageformats")
-        qt_iconengines_path = os.path.join(pyside_path, "Qt", "plugins", "iconengines")
-        qt_webview_path = os.path.join(pyside_path, "Qt", "plugins", "webview")
-
-        include_files = [
-            # Include Qt
-            (qt_platforms_path, 'lib/Qt/plugins/platforms'),
-            (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
-            (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
-            (qt_webview_path, 'lib/Qt/plugins/webview')
-            ]
-
+        # # Qt plugins paths
+        # qt_platforms_path = os.path.join(pyside_path, "Qt", "plugins", "platforms")
+        # qt_imageformats_path = os.path.join(pyside_path, "Qt", "plugins", "imageformats")
+        # qt_iconengines_path = os.path.join(pyside_path, "Qt", "plugins", "iconengines")
+        # qt_webview_path = os.path.join(pyside_path, "Qt", "plugins", "webview")
+        # 
+        # include_files = [
+        #     # Include Qt
+        #     (qt_platforms_path, 'lib/PySide2/plugins/platforms'),
+        #     (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
+        #     (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
+        #     (qt_webview_path, 'lib/Qt/plugins/webview')
+        #     ]
+        include_files = []
         # Extend include_files with resources list
         include_files.extend(resources)
         include_files.extend(include_connect_plugins)
@@ -480,7 +482,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
     ])
 
     configuration['options']['build_exe'] = {
-        'packages': ['ftrack_connect'],
+        'packages': ['PySide2', 'ftrack_connect'],
         'includes': includes,
         "zip_include_packages": [
             # 'ftrack_connect',
