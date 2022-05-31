@@ -285,19 +285,16 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         }
 
         # Qt plugins paths
-        # qt_platforms_path = os.path.join(pyside_path, "plugins", "platforms")
-        # qt_imageformats_path = os.path.join(pyside_path, "plugins", "imageformats")
-        # qt_iconengines_path = os.path.join(pyside_path, "plugins", "iconengines")
-        # qt_webview_path = os.path.join(pyside_path, "plugins", "webview")
+        qt_resources_path = os.path.join(pyside_path, "resources")
+        qt_translations_path = os.path.join(pyside_path, "translations")
+        qt_engine_path = os.path.join(pyside_path, "QtWebEngineProcess.exe")
         # 
-        # include_files = [
-        #     # Include Qt
-        #     (qt_platforms_path, 'lib/Qt/plugins/platforms'),
-        #     (qt_imageformats_path, 'lib/Qt/plugins/imageformats'),
-        #     (qt_iconengines_path, 'lib/Qt/plugins/iconengines'),
-        #     (qt_webview_path, 'lib/Qt/plugins/webview'),
-        # ]
-        include_files = []
+        include_files = [
+            # Include Qt
+            (qt_resources_path, 'lib/PySide2/resources'),
+            (qt_translations_path, 'lib/PySide2/translations'),
+            (qt_engine_path, 'lib/PySide2/QtWebEngineProcess.exe')
+        ]
         #Extend include_files with resources list
         include_files.extend(resources)
         include_files.extend(include_connect_plugins)

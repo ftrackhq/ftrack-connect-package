@@ -127,10 +127,10 @@ os.environ['FTRACK_CONNECT_PLUGIN_PATH'] = os.path.pathsep.join(
 # handle default event plugin paths
 ftrack_event_plugin_paths = [
     os.path.abspath(
-            os.path.join(
-                resource_path, 'hook'
-            )
+        os.path.join(
+            resource_path, 'hook'
         )
+    )
 ]
 
 if 'FTRACK_EVENT_PLUGIN_PATH' in os.environ:
