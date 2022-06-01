@@ -287,13 +287,14 @@ if sys.platform in ('darwin', 'win32', 'linux'):
         # Qt plugins paths
         qt_resources_path = os.path.join(pyside_path, "resources")
         qt_translations_path = os.path.join(pyside_path, "translations")
-        qt_engine_path = os.path.join(pyside_path, "QtWebEngineProcess.exe")
+        qt_engine_exec_path = os.path.join(pyside_path, "QtWebEngineProcess.exe")
+        #
         # 
         include_files = [
             # Include Qt
             (qt_resources_path, 'lib/PySide2/resources'),
             (qt_translations_path, 'lib/PySide2/translations'),
-            (qt_engine_path, 'lib/PySide2/QtWebEngineProcess.exe')
+            (qt_engine_exec_path, 'lib/PySide2/QtWebEngineProcess.exe')
         ]
         #Extend include_files with resources list
         include_files.extend(resources)
