@@ -6,12 +6,21 @@ Releases
 ########
 
 
+########
+
+.. release:: Upcoming
+
+   .. change:: added
+
+        Update known issue with windows system tray problem.
+
 .. release:: 2.0.0-rc-6
     :date: 2022-06-07
 
    .. change:: changed
 
         Remove plugin manager from package.
+    
 .. release:: 2.0.0-rc-5
     :date: 2022-03-25
 

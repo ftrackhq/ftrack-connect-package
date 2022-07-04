@@ -8,6 +8,20 @@ Known Issues
 A collection on known issues and how to solve them.
 
 
+System tray icon barely visible
+===============================
+
+As connect will respect the style set for the application and not the system one,
+if these are set differently the system tray icon might be hard to see.
+Please check if the application and ststem are set to the same (dark or light) theme.
+
+.. image:: /image/windows_theme.png
+
+
+
+
+
+
 ImportError: No Qt binding were found.
 ======================================
 
