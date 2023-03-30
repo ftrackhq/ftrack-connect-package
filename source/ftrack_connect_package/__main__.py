@@ -30,7 +30,7 @@ except Exception:
 
     class SysWrapper(object):
         def __getattribute__(self, item):
-            if item is 'stderr':
+            if item == 'stderr':
                 return DummyStream()
             return getattr(sys, item)
 
