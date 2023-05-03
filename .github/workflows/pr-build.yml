@@ -20,7 +20,6 @@ jobs:
       - name: Set envs
         run: |
           git fetch -a
-          git describe
           echo "SOURCE_TAG=$(git tag | sort | tail -n 1)" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Create pre release
