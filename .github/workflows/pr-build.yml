@@ -14,19 +14,19 @@ jobs:
     name: Pre Release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Create pre release
-      id: create_pre_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ env.SOURCE_TAG }}-${{github.sha}}
-        release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
-        body: |
-          Please check PR for details.
-        draft: false
-        prerelease: true
+      - uses: actions/checkout@v3
+      - name: Create pre release
+        id: create_pre_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.SOURCE_TAG }}-${{github.sha}}
+          release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
+          body: |
+            Please check PR for details.
+          draft: false
+          prerelease: true
   build-connect-package-mac:
     name: Build Connect package
     needs: pre-release
