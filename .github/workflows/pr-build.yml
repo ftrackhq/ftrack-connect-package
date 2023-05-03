@@ -36,7 +36,7 @@ jobs:
             Please check PR for details.
           draft: false
           prerelease: true
-  build-connect-package-pc:
+  build-connect-package-windows:
     name: Build Connect package on Windows
     needs: release
     if: false
@@ -80,7 +80,7 @@ jobs:
           release_id: ${{ needs.release.outputs.release_id }}
           overwrite: true
           verbose: true
-  build-connect-package-mac:
+  build-connect-package-macos:
     name: Build Connect package on Mac OS
     needs: release
     runs-on: macos-11
@@ -106,6 +106,8 @@ jobs:
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
       - name: Install Connect package deps
         run: |
+          cat requirements.txt
+          python -c "import sys;print(sys.platform)"
           pip install -r requirements.txt
           pip list
       - name: Build plugin
