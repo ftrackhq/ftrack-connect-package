@@ -20,7 +20,7 @@ jobs:
       - name: Set envs
         run: |
           git fetch -a
-          echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=$(git describe --abbrev=0)" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Create pre release
         id: create_pre_release
@@ -46,7 +46,7 @@ jobs:
       - name: Set envs
         run: |
           git fetch -a
-          echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=$(git describe --abbrev=0)" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
@@ -89,7 +89,7 @@ jobs:
       - name: Set envs
         run: |
           git fetch -a
-          echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=$(git describe --abbrev=0)" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
