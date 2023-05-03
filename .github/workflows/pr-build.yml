@@ -25,6 +25,10 @@ jobs:
           pip list
       - name: Install Connect deps
         run: |
+          echo "Source contents:"
+          ls -la /home/runner/work/ftrack-connect-package/ftrack-connect-package/src/ftrack-connect/source
+          echo "Source parent contents:"
+          ls -la /home/runner/work/ftrack-connect-package/ftrack-connect-package/src/ftrack-connect/source/..
           pip install /home/runner/work/ftrack-connect-package/ftrack-connect-package/src/ftrack-connect/source/../requirements.txt
       - name: Install Connect package deps
         run: |
