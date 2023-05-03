@@ -23,6 +23,7 @@ jobs:
         run: |
           git fetch -a
           echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
@@ -42,7 +43,7 @@ jobs:
       - name: Compress plugin
         run: |
           cd build
-          tar -zcvf ftrack-connect-package-${{ env.SOURCE_TAG }}.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
+          tar -zcvf ftrack-connect-package-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -50,7 +51,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ env.SOURCE_TAG }}-${{github.sha}}
-          release_name: PR test release ${{ env.SOURCE_TAG }}-${{github.sha}}(${{ github.head_ref }})
+          release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
           body: |
             Please check PR for details.
           draft: false
