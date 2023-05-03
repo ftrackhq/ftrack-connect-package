@@ -92,9 +92,9 @@ jobs:
       - name: Checkout and set envs
         run: |
           git fetch -a
-          git checkout ${{ needs.release.outputs.source_tag }}
+          git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{ github.sha }} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
