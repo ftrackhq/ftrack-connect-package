@@ -111,6 +111,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "build/*.tar.gz"
-          release_id: ${{ jobs.release.steps.create_pre_release.outputs.id }}
+          release_id: ${{ needs.release.outputs.release_id }}
           overwrite: true
           verbose: true
