@@ -68,7 +68,7 @@ jobs:
       - name: Build plugin
         run: |
           python setup.py bdist_msi
-      - name: Rename dmg
+      - name: Rename msi
         run: |
           cd build
           mv *.msi "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}-win64.msi"

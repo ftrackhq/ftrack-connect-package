@@ -102,11 +102,7 @@ __version__ = {version!r}
 # General configuration.
 configuration = dict(
     name='ftrack Connect',
-    use_scm_version={
-        'write_to': 'source/ftrack_connect_package/_version.py',
-        'write_to_template': version_template,
-        'version_scheme': 'post-release'
-    },
+    version=VERSION if 'CONNECT_SOURCE_LOCATION' in os.environ else None,
     description='Meta package for ftrack connect.',
     long_description=open(README_PATH).read(),
     keywords='ftrack, connect, package',
@@ -134,6 +130,23 @@ configuration = dict(
     options={},
     python_requires=">=3, <4"
 )
+
+if 'SOURCE_HASH' not in os.environ:
+    # GH CI provides this
+    configuration["version"] = VERSION
+    with open("source/ftrack_connect_package/_version.py", "w") as f:
+        f.write("""
+# :coding: utf-8
+# :copyright: Copyright (c) 2014-2021 ftrack
+
+__version__ = '{}-{}'
+""".format(VERSION, os.environ['SOURCE_HASH']))
+else:
+    configuration["use_scm_version"] = {
+        'write_to': 'source/ftrack_connect_package/_version.py',
+        'write_to_template': version_template,
+        'version_scheme': 'post-release'
+    }
 
 
 # Platform specific distributions.
