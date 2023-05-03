@@ -69,7 +69,7 @@ release = get_version(
 # take major/minor/patch
 VERSION = '.'.join(release.split('.')[:3])
 
-print('BUILDING VERSION : {}'.format(release))
+logging.info('BUILDING VERSION : {}'.format(release))
 
 
 connect_resource_hook = pkg_resources.resource_filename(
@@ -78,6 +78,8 @@ connect_resource_hook = pkg_resources.resource_filename(
 )
 if not os.path.exists(connect_resource_hook):
     # Connect installed from Git
+    logging.warning('Could not find connect resource hook @ "{}", using relative path'.format(connect_resource_hook))
+    logging.warning('@@@ {}'.format(pkg_resources.Requirement.parse('ftrack-connect')))
     connect_resource_hook = os.path.relpath(pkg_resources.resource_filename(
         pkg_resources.Requirement.parse('ftrack-connect'),
         '../resource/hook'
@@ -148,7 +150,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             '''Run build ensuring build_resources called first.'''
 
             import requests
-            print('Creating {}'.format(DOWNLOAD_PLUGIN_PATH))
+            logging.info('Creating {}'.format(DOWNLOAD_PLUGIN_PATH))
             os.makedirs(DOWNLOAD_PLUGIN_PATH)
 
             for plugin, target in external_connect_plugins:
@@ -160,7 +162,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
                         temp_path
                     )
                 )
-                print('DOWNLOADING FROM  {}'.format(url))
+                logging.info('DOWNLOADING FROM  {}'.format(url))
 
                 response = requests.get(url)
                 response.raise_for_status()
