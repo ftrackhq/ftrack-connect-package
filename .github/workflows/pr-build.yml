@@ -17,6 +17,11 @@ jobs:
       release_id: ${{ steps.create_pre_release.outputs.id }}
     steps:
       - uses: actions/checkout@v3
+      - name: Set envs
+        run: |
+          git fetch -a
+          echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Create pre release
         id: create_pre_release
         uses: actions/create-release@v1
@@ -38,7 +43,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.7'
-      - name: Branch name
+      - name: Set envs
         run: |
           git fetch -a
           echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
@@ -81,7 +86,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.7'
-      - name: Branch name
+      - name: Set envs
         run: |
           git fetch -a
           echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
