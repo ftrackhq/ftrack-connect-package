@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_id: ${{ steps.create_pre_release.outputs.id }}
+      source_tag: ${{ steps.create_pre_release.env.SOURCE_TAG }}
     steps:
       - uses: actions/checkout@v3
       - name: Set envs
@@ -48,7 +49,7 @@ jobs:
         run: |
           git fetch -a
           git tag | sort
-          echo "SOURCE_TAG=$(git tag | sort | tail -n 1)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
