@@ -14,10 +14,11 @@ jobs:
     name: Build Connect package
     runs-on: ubuntu-latest
     steps:
-      - name: Install Connect
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - with:
           python-version: '3.7'
+      - name: Install Connect
         run: |
           python -VV
           pip install -e git://github.com/ftrackhq/ftrack-connect.git@2.1.1
