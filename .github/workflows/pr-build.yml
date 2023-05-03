@@ -46,6 +46,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.7'
+      - uses: actions/setup-node@v3
       - name: Checkout and set envs
         run: |
           git fetch -a
@@ -65,6 +66,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip list
+          npm install -g appdmg
       - name: Build plugin
         run: |
           python setup.py bdist_msi
