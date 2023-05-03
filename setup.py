@@ -78,12 +78,9 @@ connect_resource_hook = pkg_resources.resource_filename(
 )
 if not os.path.exists(connect_resource_hook):
     # Connect installed from Git
-    logging.warning('Could not find connect resource hook @ "{}", using relative path'.format(connect_resource_hook))
-    logging.warning('@@@ {}'.format(pkg_resources.Requirement.parse('ftrack-connect')))
-    connect_resource_hook = os.path.relpath(pkg_resources.resource_filename(
-        pkg_resources.Requirement.parse('ftrack-connect'),
-        '../resource/hook'
-    ))
+    logging.warning('Could not find connect resource hook @ "{}", attempting Github path'.format(connect_resource_hook))
+    if sys.platform.startswith('linux'):
+        connect_resource_hook = '/home/runner/work/ftrack-connect-package/ftrack-connect-package/src/ftrack-connect/resource/hook'
 
 external_connect_plugins = []
 for plugin in embedded_plugins:
