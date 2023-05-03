@@ -61,10 +61,14 @@ AWS_PLUGIN_DOWNLOAD_PATH = (
     'https://download.ftrack.com/ftrack-connect/integrations/'
 )
 
-# Read version from source.
-release = get_version(
-    version_scheme='post-release'
-)
+if 'SOURCE_TAG' in os.environ:
+    # Github CI provides this
+    release = os.environ['SOURCE_TAG'].split('/')[-1]
+else:
+    # Read version from source.
+    release = get_version(
+        version_scheme='post-release'
+    )
 
 # take major/minor/patch
 VERSION = '.'.join(release.split('.')[:3])
@@ -72,6 +76,7 @@ VERSION = '.'.join(release.split('.')[:3])
 logging.info('BUILDING VERSION : {}'.format(release))
 
 if 'CONNECT_SOURCE_LOCATION' in os.environ:
+    # Github CI provides this
     connect_resource_hook = os.path.join(os.environ['CONNECT_SOURCE_LOCATION'], 'resource', 'hook')
 else:
     connect_resource_hook = pkg_resources.resource_filename(
