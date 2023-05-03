@@ -131,7 +131,7 @@ configuration = dict(
     python_requires=">=3, <4"
 )
 
-if 'SOURCE_HASH' not in os.environ:
+if 'SOURCE_HASH' in os.environ:
     # GH CI provides this
     configuration["version"] = VERSION
     with open("source/ftrack_connect_package/_version.py", "w") as f:
