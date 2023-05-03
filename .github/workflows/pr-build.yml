@@ -36,8 +36,51 @@ jobs:
             Please check PR for details.
           draft: false
           prerelease: true
+  build-connect-package-pc:
+    name: Build Connect package on Windows
+    needs: release
+    if: false
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+      - name: Checkout and set envs
+        run: |
+          git checkout ${{ needs.release.outputs.source_tag }}
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+      - name: Install Connect
+        run: |
+          python -VV
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@2.1.1#egg=ftrack_connect
+          pip list
+          echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Install Connect deps
+        run: |
+          pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
+      - name: Install Connect package deps
+        run: |
+          pip install -r requirements.txt
+          pip list
+      - name: Build plugin
+        run: |
+          python setup.py bdist_msi
+      - name: Rename dmg
+        run: |
+          cd build
+          mv *.msi "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}-win64.msi"
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "build/*.msi"
+          release_id: ${{ needs.release.outputs.release_id }}
+          overwrite: true
+          verbose: true
   build-connect-package-mac:
-    name: Build Connect package
+    name: Build Connect package on Mac OS
     needs: release
     runs-on: macos-11
     steps:
@@ -45,10 +88,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.7'
-      - name: Set envs
+      - name: Checkout and set envs
         run: |
-          git fetch -a
-          git tag | sort
+          git checkout ${{ needs.release.outputs.source_tag }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
       - name: Install Connect
