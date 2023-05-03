@@ -35,7 +35,7 @@ jobs:
           python setup.py build_exe
       - name: Compress plugin
         run: |
-          cd dist
+          cd build
           tar -zcvf ftrack-connect-package-${{ github.ref }}.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
       - name: Create Release
         id: create_release
