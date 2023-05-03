@@ -76,6 +76,12 @@ connect_resource_hook = pkg_resources.resource_filename(
     pkg_resources.Requirement.parse('ftrack-connect'),
     'ftrack_connect_resource/hook'
 )
+if not os.path.exists(connect_resource_hook):
+    # Connect installed from Git
+    connect_resource_hook = os.path.relpath(pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect'),
+        '../resource/hook'
+    ))
 
 external_connect_plugins = []
 for plugin in embedded_plugins:
