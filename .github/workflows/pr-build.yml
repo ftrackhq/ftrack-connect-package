@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ backlog/gh-build-and-release-on-pr ]
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  build-connect-package:
+    name: Build Connect package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Connect
+      - uses: actions/setup-python@v4
+      - with:
+          python-version: '3.7'
+        run: |
+          python -VV
+          pip install -e git://github.com/ftrackhq/ftrack-connect.git@2.1.1
+          pip list
