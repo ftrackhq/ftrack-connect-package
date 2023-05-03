@@ -10,8 +10,69 @@ on:
       - synchronize
 
 jobs:
-  build-connect-package-linux:
+  pre-release:
+    name: Pre Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Create pre release
+      id: create_pre_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ env.SOURCE_TAG }}-${{github.sha}}
+        release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
+        body: |
+          Please check PR for details.
+        draft: false
+        prerelease: true
+  build-connect-package-mac:
     name: Build Connect package
+    needs: pre-release
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+      - name: Branch name
+        run: |
+          git fetch -a
+          echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+      - name: Install Connect
+        run: |
+          python -VV
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@2.1.1#egg=ftrack_connect
+          pip list
+          echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Install Connect deps
+        run: |
+          pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
+      - name: Install Connect package deps
+        run: |
+          pip install -r requirements.txt
+          pip list
+      - name: Build plugin
+        run: |
+          python setup.py bdist_mac --create_dmg
+      - name: Rename dmg
+        run: |
+          cd build
+          mv *.dmg "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}.dmg"
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "build/*.dmg"
+          release_id: ${{ jobs.pre-release.steps.create_pre_release.outputs.id }}
+          overwrite: true
+          verbose: true
+  build-connect-package-linux:
+    name: Build Connect package on Linux
+    if: false
+    needs: pre-release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +80,6 @@ jobs:
         with:
           python-version: '3.7'
       - name: Branch name
-        id: get_tag
         run: |
           git fetch -a
           echo "SOURCE_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
@@ -44,23 +104,11 @@ jobs:
         run: |
           cd build
           tar -zcvf ftrack-connect-package-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ env.SOURCE_TAG }}-${{github.sha}}
-          release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
-          body: |
-            Please check PR for details.
-          draft: false
-          prerelease: true
       - uses: xresloader/upload-to-github-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "build/*.tar.gz"
-          release_id: ${{ steps.create_release.outputs.id }}
+          release_id: ${{ jobs.pre-release.steps.create_pre_release.outputs.id }}
           overwrite: true
           verbose: true
