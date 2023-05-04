@@ -56,7 +56,7 @@ jobs:
           python -VV
           pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
-          $($(pip show ftrack-connect  | findstr -i "Editable project location:")  -split ": ")[-1]
+          $Env:CONNECT_SOURCE_LOCATION = $($(pip show ftrack-connect | findstr -i "location")  -split ": ")[-1]; echo "CONNECT_SOURCE_LOCATION=$Env:CONNECT_SOURCE_LOCATION" >> $env:GITHUB_ENV
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
