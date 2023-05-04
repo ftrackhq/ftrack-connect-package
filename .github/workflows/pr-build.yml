@@ -49,14 +49,14 @@ jobs:
         run: |
           git fetch -a
           git checkout ${{ github.sha }}
-          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{github.sha}}".Substring(0,20) >> $env:GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
-          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@2.1.1#egg=ftrack_connect
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
-          echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+          $($(pip show ftrack-connect  | findstr -i "Editable project location:")  -split ": ")[-1]
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
@@ -99,7 +99,7 @@ jobs:
       - name: Install Connect
         run: |
           python -VV
-          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@2.1.1#egg=ftrack_connect
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
           echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
       - name: Install Connect deps
@@ -146,7 +146,7 @@ jobs:
       - name: Install Connect
         run: |
           python -VV
-          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@2.1.1#egg=ftrack_connect
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
           echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
       - name: Install Connect deps
