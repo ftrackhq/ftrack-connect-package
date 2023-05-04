@@ -71,6 +71,7 @@ jobs:
         run: |
           cd build
           mv *.msi "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}-win64.msi"
+          dir
       - uses: xresloader/upload-to-github-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -82,7 +83,6 @@ jobs:
   build-connect-package-macos:
     name: Build Connect package on Mac OS
     needs: release
-    if: false
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v3
@@ -129,7 +129,6 @@ jobs:
           verbose: true
   build-connect-package-linux:
     name: Build Connect package on Linux
-    if: false
     needs: release
     runs-on: ubuntu-latest
     steps:
