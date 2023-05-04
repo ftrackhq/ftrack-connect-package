@@ -75,7 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "build\*.msi"
+          file: "build\\*.msi"
           release_id: ${{ needs.release.outputs.release_id }}
           overwrite: true
           verbose: true
