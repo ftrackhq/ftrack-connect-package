@@ -56,7 +56,7 @@ jobs:
           python -VV
           pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
-          $Env:CONNECT_SOURCE_LOCATION = $($(pip show ftrack-connect | findstr -i "location")  -split ": ")[-1]; echo "CONNECT_SOURCE_LOCATION=$Env:CONNECT_SOURCE_LOCATION" >> $env:GITHUB_ENV
+          $Env:CONNECT_SOURCE_LOCATION = $($(pip show ftrack-connect | findstr -i "location") -split ": ")[-1]; echo "CONNECT_SOURCE_LOCATION=$Env:CONNECT_SOURCE_LOCATION" >> $env:GITHUB_ENV
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
@@ -75,7 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "build/*.msi"
+          file: "build\*.msi"
           release_id: ${{ needs.release.outputs.release_id }}
           overwrite: true
           verbose: true
