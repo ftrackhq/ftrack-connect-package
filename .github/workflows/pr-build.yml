@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [ backlog/gh-build-and-release-on-pr ]
   pull_request:
     types:
       - opened
@@ -34,6 +32,8 @@ jobs:
           release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
           body: |
             Please check PR for details.
+            Recall that installers are not signed and are not intended for production use. On Mac you will need to
+            right click and open the installer to bypass Gatekeeper.
           draft: false
           prerelease: true
   build-connect-package-windows:
