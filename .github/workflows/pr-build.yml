@@ -37,8 +37,9 @@ jobs:
           draft: false
           prerelease: true
   build-connect-package-windows:
-    name: Build Connect package on Windows
+    name: Build on Windows
     needs: release
+    if: false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -81,7 +82,7 @@ jobs:
           overwrite: true
           verbose: true
   build-connect-package-macos:
-    name: Build Connect package on Mac OS
+    name: Build on Mac OS
     needs: release
     runs-on: macos-11
     steps:
@@ -102,6 +103,10 @@ jobs:
           pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
           echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
@@ -128,8 +133,9 @@ jobs:
           overwrite: true
           verbose: true
   build-connect-package-linux:
-    name: Build Connect package on Linux
+    name: Build on Linux
     needs: release
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
