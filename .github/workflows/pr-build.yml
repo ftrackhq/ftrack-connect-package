@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  push:
+    branches: [ backlog/gh-build-and-release-on-pr ]
   pull_request:
     types:
       - opened
