@@ -63,7 +63,7 @@ AWS_PLUGIN_DOWNLOAD_PATH = (
 
 if 'SOURCE_TAG' in os.environ:
     # Github CI provides this
-    release = os.environ['SOURCE_TAG'].split('/')[-1]
+    release = os.environ['SOURCE_TAG']
 else:
     # Read version from source.
     release = get_version(

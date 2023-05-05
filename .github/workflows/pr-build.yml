@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [ backlog/gh-build-and-release-on-pr ]
   pull_request:
     types:
       - opened
@@ -11,7 +9,7 @@ on:
 
 jobs:
   release:
-    name: Release
+    name: Pre-release
     runs-on: ubuntu-latest
     outputs:
       release_id: ${{ steps.create_pre_release.outputs.id }}
@@ -138,7 +136,6 @@ jobs:
   build-connect-package-linux:
     name: Build on Linux
     needs: release
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
