@@ -1,0 +1,185 @@
+name: CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  release:
+    name: Pre-release
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create_pre_release.outputs.id }}
+      source_tag: ${{ env.SOURCE_TAG }}
+      source_hash: ${{ env.SOURCE_HASH }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set envs
+        run: |
+          git fetch -a
+          git tag | sort
+          echo "SOURCE_TAG=$(git tag | sort | tail -n 1 | cut -d- -f -1)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -7)" >> $GITHUB_ENV
+      - name: Create pre release
+        id: create_pre_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}
+          release_name: PR test release ${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}(${{ github.ref }})
+          body: |
+            Please check PR for details.
+            Recall that installers are not signed and are not intended for production use. On Mac you will need to
+            right click and open the installer to bypass Gatekeeper.
+          draft: false
+          prerelease: true
+  build-connect-package-windows:
+    name: Build on Windows
+    needs: release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+      - name: Checkout and set envs
+        run: |
+          git fetch -a
+          git checkout ${{ github.sha }}
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
+      - name: Install Connect
+        run: |
+          python -VV
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
+          pip list
+          $Env:CONNECT_SOURCE_LOCATION = $($(pip show ftrack-connect | findstr -i "location") -split ": ")[-1]; echo "CONNECT_SOURCE_LOCATION=$Env:CONNECT_SOURCE_LOCATION" >> $env:GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
+      - name: Install Connect deps
+        run: |
+          pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
+      - name: Install Connect package deps
+        run: |
+          pip install -r requirements.txt
+          pip list
+      - name: Build plugin
+        run: |
+          python setup.py bdist_msi
+      - name: Rename msi
+        run: |
+          cd dist
+          mv *.msi "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}-win64.msi"
+          dir
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "dist\\*.msi"
+          release_id: ${{ needs.release.outputs.release_id }}
+          overwrite: true
+          verbose: true
+  build-connect-package-macos:
+    name: Build on Mac OS
+    needs: release
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+      - uses: actions/setup-node@v3
+      - name: Checkout and set envs
+        run: |
+          git fetch -a
+          git checkout ${{ github.sha }}
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
+      - name: Install Connect
+        run: |
+          python -VV
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
+          pip list
+          echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
+      - name: Install Connect deps
+        run: |
+          pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
+      - name: Install Connect package deps
+        run: |
+          cat requirements.txt
+          python -c "import sys;print(sys.platform)"
+          pip install -r requirements.txt
+          pip list
+          npm install -g appdmg
+      - name: Build plugin
+        run: |
+          python setup.py bdist_mac --create_dmg
+      - name: Rename dmg
+        run: |
+          cd build
+          mv *.dmg "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}.dmg"
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "build/*.dmg"
+          release_id: ${{ needs.release.outputs.release_id }}
+          overwrite: true
+          verbose: true
+  build-connect-package-linux:
+    name: Build on Linux
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7'
+      - name: Checkout and set envs
+        run: |
+          git fetch -a
+          git checkout ${{ github.sha }}
+          echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
+      - name: Install Connect
+        run: |
+          python -VV
+          pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
+          pip list
+          echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
+      - name: Install Connect deps
+        run: |
+          pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
+      - name: Install Connect package deps
+        run: |
+          pip install -r requirements.txt
+          pip list
+      - name: Build plugin
+        run: |
+          python setup.py build_exe
+      - name: Compress plugin
+        run: |
+          cd build
+          tar -zcvf ftrack-connect-package-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}.tar.gz exe.linux-x86_64-3.7 --transform 's/exe.linux-x86_64-3.7/ftrack-connect-package/'
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "build/*.tar.gz"
+          release_id: ${{ needs.release.outputs.release_id }}
+          overwrite: true
+          verbose: true
