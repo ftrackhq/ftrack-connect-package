@@ -14,13 +14,14 @@ jobs:
     outputs:
       release_id: ${{ steps.create_pre_release.outputs.id }}
       source_tag: ${{ env.SOURCE_TAG }}
+      source_hash: ${{ env.SOURCE_HASH }}
     steps:
       - uses: actions/checkout@v3
       - name: Set envs
         run: |
           git fetch -a
           git tag | sort
-          echo "SOURCE_TAG=$(git tag | sort | tail -n 1)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=$(git tag | sort | tail -n 1 | cut -d- -f -1)" >> $GITHUB_ENV
           echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -7)" >> $GITHUB_ENV
       - name: Create pre release
         id: create_pre_release
@@ -50,7 +51,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $env:GITHUB_ENV
-          echo "SOURCE_HASH=${{github.sha}}".Substring(0,19) >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
@@ -99,7 +100,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{ github.sha }} | cut -b -7)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
@@ -149,7 +150,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -7)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
