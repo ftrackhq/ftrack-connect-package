@@ -69,14 +69,14 @@ jobs:
           python setup.py bdist_msi
       - name: Rename msi
         run: |
-          cd build
+          cd dist
           mv *.msi "ftrack Connect-${{ env.SOURCE_TAG }}-${{ env.SOURCE_HASH }}-win64.msi"
           dir
       - uses: xresloader/upload-to-github-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "build\\*.msi"
+          file: "dist\\*.msi"
           release_id: ${{ needs.release.outputs.release_id }}
           overwrite: true
           verbose: true
