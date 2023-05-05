@@ -100,7 +100,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
@@ -150,7 +150,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{ needs.release.outputs.source_hash }}" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
