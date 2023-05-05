@@ -23,7 +23,7 @@ jobs:
           git fetch -a
           git tag | sort
           echo "SOURCE_TAG=$(git tag | sort | tail -n 1)" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -7)" >> $GITHUB_ENV
       - name: Create pre release
         id: create_pre_release
         uses: actions/create-release@v1
@@ -39,7 +39,6 @@ jobs:
   build-connect-package-windows:
     name: Build on Windows
     needs: release
-    if: false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -51,13 +50,17 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $env:GITHUB_ENV
-          echo "SOURCE_HASH=${{github.sha}}".Substring(0,20) >> $env:GITHUB_ENV
+          echo "SOURCE_HASH=${{github.sha}}".Substring(0,19) >> $env:GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
           pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
           $Env:CONNECT_SOURCE_LOCATION = $($(pip show ftrack-connect | findstr -i "location") -split ": ")[-1]; echo "CONNECT_SOURCE_LOCATION=$Env:CONNECT_SOURCE_LOCATION" >> $env:GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
@@ -96,7 +99,7 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{ github.sha }} | cut -b -8)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{ github.sha }} | cut -b -7)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
@@ -147,13 +150,17 @@ jobs:
           git fetch -a
           git checkout ${{ github.sha }}
           echo "SOURCE_TAG=${{ needs.release.outputs.source_tag }}" >> $GITHUB_ENV
-          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -8)" >> $GITHUB_ENV
+          echo "SOURCE_HASH=$(echo ${{github.sha}} | cut -b -7)" >> $GITHUB_ENV
       - name: Install Connect
         run: |
           python -VV
           pip install -e git+https://github.com/ftrackhq/ftrack-connect.git@${{ env.SOURCE_TAG }}#egg=ftrack_connect
           pip list
           echo "CONNECT_SOURCE_LOCATION=$(pip show ftrack-connect | grep 'Editable project location:' | cut -d' ' -f 4-)" >> $GITHUB_ENV
+      - name: Build Connect resources
+        run: |
+          cd ${{ env.CONNECT_SOURCE_LOCATION }}
+          python setup.py build_resources
       - name: Install Connect deps
         run: |
           pip install -r ${{ env.CONNECT_SOURCE_LOCATION }}/requirements.txt
