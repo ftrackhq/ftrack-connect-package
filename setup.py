@@ -61,21 +61,29 @@ AWS_PLUGIN_DOWNLOAD_PATH = (
     'https://download.ftrack.com/ftrack-connect/integrations/'
 )
 
-# Read version from source.
-release = get_version(
-    version_scheme='post-release'
-)
+if 'SOURCE_TAG' in os.environ:
+    # Github CI provides this
+    release = os.environ['SOURCE_TAG']
+else:
+    # Read version from source.
+    release = get_version(
+        version_scheme='post-release'
+    )
 
 # take major/minor/patch
 VERSION = '.'.join(release.split('.')[:3])
 
-print('BUILDING VERSION : {}'.format(release))
+logging.info('BUILDING VERSION : {}'.format(release))
 
-
-connect_resource_hook = pkg_resources.resource_filename(
-    pkg_resources.Requirement.parse('ftrack-connect'),
-    'ftrack_connect_resource/hook'
-)
+if 'CONNECT_SOURCE_LOCATION' in os.environ:
+    # Github CI provides this
+    connect_resource_hook = os.path.join(os.environ['CONNECT_SOURCE_LOCATION'], 'resource', 'hook')
+else:
+    connect_resource_hook = pkg_resources.resource_filename(
+        pkg_resources.Requirement.parse('ftrack-connect'),
+        'ftrack_connect_resource/hook'
+    )
+logging.warning('Using Connect hook resource from: {}'.format(connect_resource_hook))
 
 external_connect_plugins = []
 for plugin in embedded_plugins:
@@ -94,11 +102,7 @@ __version__ = {version!r}
 # General configuration.
 configuration = dict(
     name='ftrack Connect',
-    use_scm_version={
-        'write_to': 'source/ftrack_connect_package/_version.py',
-        'write_to_template': version_template,
-        'version_scheme': 'post-release'
-    },
+    version=VERSION if 'CONNECT_SOURCE_LOCATION' in os.environ else None,
     description='Meta package for ftrack connect.',
     long_description=open(README_PATH).read(),
     keywords='ftrack, connect, package',
@@ -127,6 +131,23 @@ configuration = dict(
     python_requires=">=3, <4"
 )
 
+if 'SOURCE_HASH' in os.environ:
+    # GH CI provides this
+    configuration["version"] = VERSION
+    with open("source/ftrack_connect_package/_version.py", "w") as f:
+        f.write("""
+# :coding: utf-8
+# :copyright: Copyright (c) 2014-2021 ftrack
+
+__version__ = '{}-{}'
+""".format(VERSION, os.environ['SOURCE_HASH']))
+else:
+    configuration["use_scm_version"] = {
+        'write_to': 'source/ftrack_connect_package/_version.py',
+        'write_to_template': version_template,
+        'version_scheme': 'post-release'
+    }
+
 
 # Platform specific distributions.
 if sys.platform in ('darwin', 'win32', 'linux'):
@@ -142,7 +163,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
             '''Run build ensuring build_resources called first.'''
 
             import requests
-            print('Creating {}'.format(DOWNLOAD_PLUGIN_PATH))
+            logging.info('Creating {}'.format(DOWNLOAD_PLUGIN_PATH))
             os.makedirs(DOWNLOAD_PLUGIN_PATH)
 
             for plugin, target in external_connect_plugins:
@@ -154,7 +175,7 @@ if sys.platform in ('darwin', 'win32', 'linux'):
                         temp_path
                     )
                 )
-                print('DOWNLOADING FROM  {}'.format(url))
+                logging.info('DOWNLOADING FROM  {}'.format(url))
 
                 response = requests.get(url)
                 response.raise_for_status()

@@ -5,6 +5,12 @@
 Releases
 ########
 
+.. release:: upcoming
+
+    .. change:: added
+
+        Github CI build (no codesign) and pre-release on PR.
+
 .. release:: 2.1.1
     :date: 2023-04-27
 
